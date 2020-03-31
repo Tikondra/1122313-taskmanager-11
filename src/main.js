@@ -1,14 +1,16 @@
 'use strict';
 
 const TASK_COUNT = 3;
-const siteMainElement = document.querySelector(`.main`);
-const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
+
 const Place = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`
 };
 
-const createSiteMenu = () => {
+const siteMainElement = document.querySelector(`.main`);
+const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
+
+const createMenu = () => {
   return (
     `<section class="control__btn-wrap">
     <input
@@ -40,6 +42,7 @@ const createSiteMenu = () => {
   </section>`
   );
 };
+
 const createFilter = () => {
   return (
     `<section class="main__filter filter container">
@@ -103,6 +106,7 @@ const createFilter = () => {
     </section>`
   );
 };
+
 const createBoard = () => {
   return (
     `<section class="board container">
@@ -115,6 +119,7 @@ const createBoard = () => {
    </section>`
   );
 };
+
 const createTask = () => {
   return (
     `<article class="card card--black">
@@ -162,6 +167,7 @@ const createTask = () => {
         </article>`
   );
 };
+
 const createTaskEdit = () => {
   return (
     `<article class="card card--edit card--yellow card--repeat">
@@ -363,15 +369,19 @@ const createTaskEdit = () => {
   </article>`
   );
 };
+
 const createButtonMore = () => (`<button class="load-more" type="button">load more</button>`);
+
 const renderCard = (container, count) => {
   for (let i = 0; i < count; i++) {
     render(container, createTask(), Place.BEFOREEND);
   }
 };
+
 const render = (container, template, place) => container.insertAdjacentHTML(place, template);
+
 const init = () => {
-  render(siteHeaderElement, createSiteMenu(), Place.BEFOREEND);
+  render(siteHeaderElement, createMenu(), Place.BEFOREEND);
   render(siteMainElement, createFilter(), Place.BEFOREEND);
   render(siteMainElement, createBoard(), Place.BEFOREEND);
 
