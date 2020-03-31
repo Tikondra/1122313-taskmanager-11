@@ -8,8 +8,9 @@ const Place = {
   BEFOREEND: `beforeend`
 };
 
-const createSiteMenu = () => (
-  `<section class="control__btn-wrap">
+const createSiteMenu = () => {
+  return (
+    `<section class="control__btn-wrap">
     <input
       type="radio"
       name="control"
@@ -37,9 +38,11 @@ const createSiteMenu = () => (
       >STATISTICS</label
     >
   </section>`
-);
-const createFilter = () => (
-  `<section class="main__filter filter container">
+  );
+};
+const createFilter = () => {
+  return (
+    `<section class="main__filter filter container">
       <input
         type="radio"
         id="filter__all"
@@ -98,9 +101,11 @@ const createFilter = () => (
         >Archive <span class="filter__archive-count">115</span></label
       >
     </section>`
-);
-const createBoard = () => (
-  `<section class="board container">
+  );
+};
+const createBoard = () => {
+  return (
+    `<section class="board container">
       <div class="board__filter-list">
         <a href="#" class="board__filter" data-sort-type="default">SORT BY DEFAULT</a>
         <a href="#" class="board__filter" data-sort-type="date-up">SORT BY DATE up</a>
@@ -108,9 +113,11 @@ const createBoard = () => (
       </div>
       <div class="board__tasks"></div>
    </section>`
-);
-const createTask = () => (
-  `<article class="card card--black">
+  );
+};
+const createTask = () => {
+  return (
+    `<article class="card card--black">
           <div class="card__form">
             <div class="card__inner">
               <div class="card__control">
@@ -153,9 +160,11 @@ const createTask = () => (
             </div>
           </div>
         </article>`
-);
-const createTaskEdit = () => (
-  `<article class="card card--edit card--yellow card--repeat">
+  );
+};
+const createTaskEdit = () => {
+  return (
+    `<article class="card card--edit card--yellow card--repeat">
     <form class="card__form" method="get">
       <div class="card__inner">
         <div class="card__color-bar">
@@ -352,10 +361,9 @@ const createTaskEdit = () => (
       </div>
     </form>
   </article>`
-);
-const createButtonMore = () => (
-  `<button class="load-more" type="button">load more</button>`
-);
+  );
+};
+const createButtonMore = () => (`<button class="load-more" type="button">load more</button>`);
 const renderCard = (container, count) => {
   for (let i = 0; i < count; i++) {
     render(container, createTask(), Place.BEFOREEND);
