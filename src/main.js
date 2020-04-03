@@ -1,27 +1,15 @@
 import {createMenu} from "./components/menu";
 import {createFilter} from "./components/filter";
 import {createBoard} from "./components/board";
-import {createTask} from "./components/task";
 import {createTaskEdit} from "./components/task-edit";
 import {createButtonMore} from "./components/button-more";
 
-const TASK_COUNT = 3;
+import {TASK_COUNT, Place} from "./components/consts";
 
-const Place = {
-  AFTERBEGIN: `afterbegin`,
-  BEFOREEND: `beforeend`
-};
+import {renderCard, render} from "./components/utils";
 
 const siteMainElement = document.querySelector(`.main`);
 const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
-
-const renderCard = (container, count) => {
-  for (let i = 0; i < count; i++) {
-    render(container, createTask(), Place.BEFOREEND);
-  }
-};
-
-const render = (container, template, place) => container.insertAdjacentHTML(place, template);
 
 const init = () => {
   render(siteHeaderElement, createMenu(), Place.BEFOREEND);
