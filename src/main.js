@@ -7,14 +7,17 @@ import {createButtonMore} from "./components/button-more";
 import {generateFilters} from "./mock/filter";
 import {generateTasks} from "./mock/task";
 
-import {TASK_COUNT, Place} from "./components/consts";
+import {TASK_COUNT, Place, START_SHOW_TASK, MORE_SHOW_TASK} from "./components/consts";
 
 import {renderCard, render} from "./components/utils";
+import {createTask} from "./components/task";
 
 const siteMainElement = document.querySelector(`.main`);
 const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
 const filters = generateFilters();
 const tasks = generateTasks(TASK_COUNT);
+
+let showTaskCount = START_SHOW_TASK;
 
 const init = () => {
   render(siteHeaderElement, createMenu(), Place.BEFOREEND);
@@ -25,8 +28,23 @@ const init = () => {
   const boardElement = siteMainElement.querySelector(`.board`);
 
   render(taskListElement, createTaskEdit(tasks[0]), Place.BEFOREEND);
-  renderCard(taskListElement, tasks.length);
+  renderCard(taskListElement, showTaskCount);
   render(boardElement, createButtonMore(), Place.BEFOREEND);
+
+  const loadMoreButton = boardElement.querySelector(`.load-more`);
+
+  loadMoreButton.addEventListener(`click`, () => {
+    const prevTaskCount = showTaskCount;
+
+    showTaskCount += MORE_SHOW_TASK;
+
+    tasks.slice(prevTaskCount, showTaskCount)
+      .forEach((task) => render(taskListElement, createTask(task), Place.BEFOREEND));
+
+    if (showTaskCount >= tasks.length) {
+      loadMoreButton.remove();
+    }
+  });
 };
 
 init();

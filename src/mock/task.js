@@ -17,13 +17,10 @@ const DEFAULT_REPEAT_DAYS = {
 };
 
 const generateRepeatingDays = () => {
-  const randomRepeatDays = {};
-
-  DAYS.forEach((day) => {
-    randomRepeatDays[day] = Math.random() > 0.5;
-  });
-
-  return randomRepeatDays;
+  return DAYS.reduce((days, day) => {
+    days[day] = Math.random() > 0.5;
+    return days;
+  }, {});
 };
 
 const getRandomArrayItem = (array) => {
