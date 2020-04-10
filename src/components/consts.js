@@ -1,9 +1,9 @@
-const TASK_COUNT = 27;
-const START_SHOW_TASK = 8;
-const MORE_SHOW_TASK = 8;
-const DAYS = [`mo`, `tu`, `we`, `th`, `fr`, `sa`, `su`];
-const COLORS = [`black`, `yellow`, `blue`, `green`, `pink`];
-const MONTH = [
+export const TASK_COUNT = 27;
+export const START_SHOW_TASK = 8;
+export const MORE_SHOW_TASK = 8;
+export const DAYS = [`mo`, `tu`, `we`, `th`, `fr`, `sa`, `su`];
+export const COLORS = [`black`, `yellow`, `blue`, `green`, `pink`];
+export const MONTH = [
   `January`,
   `February`,
   `March`,
@@ -18,9 +18,7 @@ const MONTH = [
   `December`,
 ];
 
-const Place = {
+export const Place = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`
 };
-
-export {TASK_COUNT, START_SHOW_TASK, MORE_SHOW_TASK, DAYS, COLORS, MONTH, Place};

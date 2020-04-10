@@ -1,48 +1,7 @@
 import {MONTH, COLORS, DAYS} from "./consts";
 import {formatTime} from "./utils";
-
-const creatColorMarkup = (colors, currentColor) => {
-  return colors
-    .map((color, index) => {
-      return (
-        `<input
-          type="radio"
-          id="color-${color}-${index}"
-          class="card__color-input card__color-input--${color} visually-hidden"
-          name="color"
-          value="${color}"
-          ${currentColor === color ? `checked` : ``}
-        />
-        <label
-          for="color-${color}-${index}"
-          class="card__color card__color--${color}"
-          >${color}</label
-        >`
-      );
-    })
-    .join(`\n`);
-};
-
-const createRepeatDays = (days, repeatingDays) => {
-  return days
-    .map((day, index) => {
-      const isChecked = repeatingDays[day];
-      return (
-        `<input
-          class="visually-hidden card__repeat-day-input"
-          type="checkbox"
-          id="repeat-${day}-${index}"
-          name="repeat"
-          value="${day}"
-          ${isChecked ? `checked` : ``}
-        />
-        <label class="card__repeat-day" for="repeat-${day}-${index}"
-          >${day}</label
-        >`
-      );
-    })
-    .join(`\n`);
-};
+import {creatColorMarkup} from "./color-markup";
+import {createRepeatDays} from "./repeat-days";
 
 export const createTaskEdit = (task) => {
   const {description, dueDate, color, repeatingDays} = task;

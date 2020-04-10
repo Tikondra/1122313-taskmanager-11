@@ -1,5 +1,5 @@
 import {createMenu} from "./components/menu";
-import {createFilter} from "./components/filter";
+import {createFilters} from "./components/filter";
 import {createBoard} from "./components/board";
 import {createTaskEdit} from "./components/task-edit";
 import {createButtonMore} from "./components/button-more";
@@ -21,7 +21,7 @@ let showTaskCount = START_SHOW_TASK;
 
 const init = () => {
   render(siteHeaderElement, createMenu(), Place.BEFOREEND);
-  render(siteMainElement, createFilter(filters), Place.BEFOREEND);
+  render(siteMainElement, createFilters(filters), Place.BEFOREEND);
   render(siteMainElement, createBoard(), Place.BEFOREEND);
 
   const taskListElement = siteMainElement.querySelector(`.board__tasks`);
