@@ -1,29 +1,27 @@
 import {createTask} from "./task";
 import {generateTasks} from "../mock/task";
-import {TASK_COUNT, Place, MONTH} from "./consts";
+import {TASK_COUNT, Place, MONTH, LESS_TEN} from "./consts";
 
 const tasks = generateTasks(TASK_COUNT);
 
-const renderCard = (container, count) => {
-  for (let i = 1; i < count; i++) {
+export const renderCard = (container, count) => {
+  for (let i = 0; i < count; i++) {
     render(container, createTask(tasks[i]), Place.BEFOREEND);
   }
 };
 
-const render = (container, template, place) => container.insertAdjacentHTML(place, template);
+export const render = (container, template, place) => container.insertAdjacentHTML(place, template);
 
-const castTimeFormat = (value) => {
-  return value < 10 ? `0${value}` : String(value);
-};
+const castTimeFormat = (value) => value < LESS_TEN ? `0${value}` : String(value);
 
-const formatTime = (date) => {
-  const hours = castTimeFormat(date.getHours() % 12);
+export const formatTime = (date) => {
+  const hours = castTimeFormat(date.getHours());
   const minutes = castTimeFormat(date.getMinutes());
 
   return `${hours}:${minutes}`;
 };
 
-const getDataTask = (dueDate, repeatingDays) => {
+export const getDataTask = (dueDate, repeatingDays) => {
   const isExpired = dueDate instanceof Date && dueDate < Date.now();
   const isDateShowing = !!dueDate;
   const date = isDateShowing ? `${dueDate.getDate()} ${MONTH[dueDate.getMonth()]}` : ``;
@@ -41,5 +39,3 @@ const getDataTask = (dueDate, repeatingDays) => {
     isRepeatingTask,
   };
 };
-
-export {renderCard, render, formatTime, getDataTask};
