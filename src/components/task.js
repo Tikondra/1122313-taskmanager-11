@@ -1,17 +1,9 @@
-import {MONTH} from "./consts";
-import {formatTime} from "./utils";
+import {getDataTask} from "./utils";
 
 export const createTask = (task) => {
   const {description, dueDate, color, repeatingDays, isArchive, isFavorite} = task;
+  const {date, time, repeatClass, deadlineClass} = getDataTask(dueDate, repeatingDays);
 
-  const isExpired = dueDate instanceof Date && dueDate < Date.now();
-  const isDateShowing = !!dueDate;
-
-  const date = isDateShowing ? `${dueDate.getDate()} ${MONTH[dueDate.getMonth()]}` : ``;
-  const time = isDateShowing ? formatTime(dueDate) : ``;
-
-  const repeatClass = Object.values(repeatingDays).some(Boolean) ? `card--repeat` : ``;
-  const deadlineClass = isExpired ? `card--deadline` : ``;
   const archiveButtonInactiveClass = isArchive ? `` : `card__btn--disabled`;
   const favoriteButtonInactiveClass = isFavorite ? `` : `card__btn--disabled`;
 

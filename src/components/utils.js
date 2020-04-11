@@ -1,6 +1,6 @@
 import {createTask} from "./task";
 import {generateTasks} from "../mock/task";
-import {TASK_COUNT, Place} from "./consts";
+import {TASK_COUNT, Place, MONTH} from "./consts";
 
 const tasks = generateTasks(TASK_COUNT);
 
@@ -23,4 +23,23 @@ const formatTime = (date) => {
   return `${hours}:${minutes}`;
 };
 
-export {renderCard, render, formatTime};
+const getDataTask = (dueDate, repeatingDays) => {
+  const isExpired = dueDate instanceof Date && dueDate < Date.now();
+  const isDateShowing = !!dueDate;
+  const date = isDateShowing ? `${dueDate.getDate()} ${MONTH[dueDate.getMonth()]}` : ``;
+  const time = isDateShowing ? formatTime(dueDate) : ``;
+  const isRepeatingTask = Object.values(repeatingDays).some(Boolean);
+  const repeatClass = isRepeatingTask ? `card--repeat` : ``;
+  const deadlineClass = isExpired ? `card--deadline` : ``;
+
+  return {
+    date,
+    time,
+    repeatClass,
+    deadlineClass,
+    isDateShowing,
+    isRepeatingTask,
+  };
+};
+
+export {renderCard, render, formatTime, getDataTask};

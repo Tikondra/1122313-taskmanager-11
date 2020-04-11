@@ -1,23 +1,18 @@
-import {MONTH, COLORS, DAYS} from "./consts";
-import {formatTime} from "./utils";
+import {COLORS, DAYS} from "./consts";
+import {getDataTask} from "./utils";
 import {creatColorMarkup} from "./color-markup";
 import {createRepeatDays} from "./repeat-days";
+import {renderDateShow} from "./date-show";
+import {renderRepeatTask} from "./repeat-task";
 
 export const createTaskEdit = (task) => {
   const {description, dueDate, color, repeatingDays} = task;
-
-  const isExpired = dueDate instanceof Date && dueDate < Date.now();
-  const isDateShowing = !!dueDate;
-
-  const date = isDateShowing ? `${dueDate.getDate()} ${MONTH[dueDate.getMonth()]}` : ``;
-  const time = isDateShowing ? formatTime(dueDate) : ``;
-
-  const isRepeatingTask = Object.values(repeatingDays).some(Boolean);
-  const repeatClass = isRepeatingTask ? `card--repeat` : ``;
-  const deadlineClass = isExpired ? `card--deadline` : ``;
+  const {date, time, repeatClass, deadlineClass, isDateShowing, isRepeatingTask} = getDataTask(dueDate, repeatingDays);
 
   const colorsMarkup = creatColorMarkup(COLORS, color);
   const repeatDays = createRepeatDays(DAYS, repeatingDays);
+
+  const getFlag = (is) => is ? `yes` : `no`;
 
   return (
     `<article class="card card--edit card--${color} ${repeatClass} ${deadlineClass}">
@@ -43,31 +38,13 @@ export const createTaskEdit = (task) => {
           <div class="card__details">
             <div class="card__dates">
               <button class="card__date-deadline-toggle" type="button">
-                date: <span class="card__date-status">${isDateShowing ? `yes` : `no`}</span>
+                date: <span class="card__date-status">${getFlag(isDateShowing)}</span>
               </button>
-              ${isDateShowing ?
-      `<fieldset class="card__date-deadline">
-        <label class="card__input-deadline-wrap">
-          <input
-            class="card__date"
-            type="text"
-            placeholder=""
-            name="date"
-            value="${date} ${time}"
-          />
-        </label>
-      </fieldset>` : ``}
-
+              ${renderDateShow(isDateShowing, date, time)}
               <button class="card__repeat-toggle" type="button">
-                repeat:<span class="card__repeat-status">${isRepeatingTask ? `yes` : `no`}</span>
+                repeat:<span class="card__repeat-status">${getFlag(isRepeatingTask)}</span>
               </button>
-              ${isRepeatingTask ?
-      `<fieldset class="card__repeat-days">
-                <div class="card__repeat-days-inner">
-                  ${repeatDays}
-                </div>
-              </fieldset>` : ``}
-
+              ${renderRepeatTask(isRepeatingTask, repeatDays)}
             </div>
           </div>
 
