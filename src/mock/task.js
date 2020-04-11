@@ -1,4 +1,5 @@
-import {COLORS, DAYS} from "../components/consts";
+import {COLORS, DAYS, DATE_RANGE, POSITIVE, NEGATIVE} from "../components/consts";
+import {isTrue, getRandomIntegerNumber, getRandomArrayItem} from "../components/utils";
 
 const DESCRIPTION_ITEMS = [
   `Изучить теорию`,
@@ -16,27 +17,14 @@ const DEFAULT_REPEAT_DAYS = {
   "su": false,
 };
 
-const generateRepeatingDays = () => {
-  return DAYS.reduce((days, day) => {
-    days[day] = Math.random() > 0.5;
-    return days;
-  }, {});
-};
+const getDay = (days, day) => Object.assign(days, {[day]: isTrue()});
 
-const getRandomArrayItem = (array) => {
-  const randomIndex = getRandomIntegerNumber(0, array.length);
-
-  return array[randomIndex];
-};
-
-const getRandomIntegerNumber = (min, max) => {
-  return min + Math.floor(Math.random() * (max - min));
-};
+const generateRepeatingDays = () => DAYS.reduce(getDay, {});
 
 const getRandomDate = () => {
   const targetDate = new Date();
-  const sign = Math.random() > 0.5 ? 1 : -1;
-  const diffValue = sign * getRandomIntegerNumber(0, 8);
+  const sign = isTrue() ? POSITIVE : NEGATIVE;
+  const diffValue = sign * getRandomIntegerNumber(DATE_RANGE);
 
   targetDate.setDate(targetDate.getDate() + diffValue);
 
@@ -44,15 +32,15 @@ const getRandomDate = () => {
 };
 
 const generateTask = () => {
-  const dueDate = Math.random() > 0.5 ? null : getRandomDate();
+  const dueDate = isTrue() ? null : getRandomDate();
 
   return {
     description: getRandomArrayItem(DESCRIPTION_ITEMS),
     dueDate,
     repeatingDays: dueDate ? DEFAULT_REPEAT_DAYS : generateRepeatingDays(),
     color: getRandomArrayItem(COLORS),
-    isArchive: Math.random() > 0.5,
-    isFavorite: Math.random() > 0.5,
+    isArchive: isTrue(),
+    isFavorite: isTrue(),
   };
 };
 

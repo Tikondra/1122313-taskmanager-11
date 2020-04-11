@@ -2,6 +2,18 @@ import {createTask} from "./task";
 import {generateTasks} from "../mock/task";
 import {TASK_COUNT, Place, MONTH, LESS_TEN} from "./consts";
 
+export const isTrue = () => Math.random() > 0.5;
+
+export const getRandomIntegerNumber = (max, min = 0) => {
+  return min + Math.floor(Math.random() * (max - min));
+};
+
+export const getRandomArrayItem = (array) => {
+  const randomIndex = getRandomIntegerNumber(0, array.length);
+
+  return array[randomIndex];
+};
+
 const tasks = generateTasks(TASK_COUNT);
 
 export const renderCard = (container, count) => {

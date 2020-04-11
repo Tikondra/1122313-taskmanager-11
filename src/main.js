@@ -32,8 +32,7 @@ const init = () => {
   render(boardElement, createButtonMore(), Place.BEFOREEND);
 
   const loadMoreButton = boardElement.querySelector(`.load-more`);
-
-  loadMoreButton.addEventListener(`click`, () => {
+  const onMoreView = () => {
     const prevTaskCount = showTaskCount;
 
     showTaskCount += MORE_SHOW_TASK;
@@ -44,7 +43,9 @@ const init = () => {
     if (showTaskCount >= tasks.length) {
       loadMoreButton.remove();
     }
-  });
+  };
+
+  loadMoreButton.addEventListener(`click`, onMoreView);
 };
 
 init();
