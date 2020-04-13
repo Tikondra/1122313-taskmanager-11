@@ -21,6 +21,9 @@ export const MONTH = [
   `November`,
   `December`,
 ];
+export const FILTER_NAMES = [
+  `all`, `overdue`, `today`, `favorites`, `repeating`, `archive`
+];
 
 export const Place = {
   AFTERBEGIN: `afterbegin`,

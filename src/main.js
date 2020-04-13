@@ -16,8 +16,7 @@ const siteMainElement = document.querySelector(`.main`);
 const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
 const filters = generateFilters();
 const tasks = generateTasks(TASK_COUNT);
-
-let showTaskCount = START_SHOW_TASK;
+const tasksCopy = tasks.slice(START_SHOW_TASK);
 
 const init = () => {
   render(siteHeaderElement, createMenu(), Place.BEFOREEND);
@@ -28,19 +27,15 @@ const init = () => {
   const boardElement = siteMainElement.querySelector(`.board`);
 
   render(taskListElement, createTaskEdit(tasks[0]), Place.BEFOREEND);
-  renderCard(taskListElement, showTaskCount);
+  renderCard(taskListElement, START_SHOW_TASK);
   render(boardElement, createButtonMore(), Place.BEFOREEND);
 
   const loadMoreButton = boardElement.querySelector(`.load-more`);
   const onMoreView = () => {
-    const prevTaskCount = showTaskCount;
-
-    showTaskCount += MORE_SHOW_TASK;
-
-    tasks.slice(prevTaskCount, showTaskCount)
+    tasksCopy.splice(0, MORE_SHOW_TASK)
       .forEach((task) => render(taskListElement, createTask(task), Place.BEFOREEND));
 
-    if (showTaskCount >= tasks.length) {
+    if (tasksCopy.length === 0) {
       loadMoreButton.remove();
     }
   };

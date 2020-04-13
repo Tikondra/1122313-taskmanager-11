@@ -1,6 +1,5 @@
-const FILTER_NAMES = [
-  `all`, `overdue`, `today`, `favorites`, `repeating`, `archive`
-];
+import {FILTER_NAMES} from "../components/consts";
+
 const MAX_FILTER_COUNT = 15;
 
 const generateFilters = () => {
