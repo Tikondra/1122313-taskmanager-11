@@ -1,4 +1,4 @@
-import {COLORS, DAYS} from "./consts";
+import {OptionTasks} from "./consts";
 import {getDataTask} from "./utils";
 import {creatColorMarkup} from "./color-markup";
 import {createRepeatDays} from "./repeat-days";
@@ -9,10 +9,10 @@ export const createTaskEdit = (task) => {
   const {description, dueDate, color, repeatingDays} = task;
   const {date, time, repeatClass, deadlineClass, isDateShowing, isRepeatingTask} = getDataTask(dueDate, repeatingDays);
 
-  const colorsMarkup = creatColorMarkup(COLORS, color);
-  const repeatDays = createRepeatDays(DAYS, repeatingDays);
+  const colorsMarkup = creatColorMarkup(OptionTasks.COLORS, color);
+  const repeatDays = createRepeatDays(OptionTasks.DAYS, repeatingDays);
 
-  const getFlag = (is) => is ? `yes` : `no`;
+  const getFlag = (exist) => exist ? `yes` : `no`;
 
   return (
     `<article class="card card--edit card--${color} ${repeatClass} ${deadlineClass}">

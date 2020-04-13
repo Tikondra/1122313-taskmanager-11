@@ -1,4 +1,4 @@
-import {COLORS, DAYS, DATE_RANGE, POSITIVE, NEGATIVE} from "../components/consts";
+import {OptionTasks, Format} from "../components/consts";
 import {isTrue, getRandomIntegerNumber, getRandomArrayItem} from "../components/utils";
 
 const DESCRIPTION_ITEMS = [
@@ -19,12 +19,12 @@ const DEFAULT_REPEAT_DAYS = {
 
 const getDay = (days, day) => Object.assign(days, {[day]: isTrue()});
 
-const generateRepeatingDays = () => DAYS.reduce(getDay, {});
+const generateRepeatingDays = () => OptionTasks.DAYS.reduce(getDay, {});
 
 const getRandomDate = () => {
   const targetDate = new Date();
-  const sign = isTrue() ? POSITIVE : NEGATIVE;
-  const diffValue = sign * getRandomIntegerNumber(DATE_RANGE);
+  const sign = isTrue() ? Format.POSITIVE : Format.NEGATIVE;
+  const diffValue = sign * getRandomIntegerNumber(Format.DATE_RANGE);
 
   targetDate.setDate(targetDate.getDate() + diffValue);
 
@@ -38,7 +38,7 @@ const generateTask = () => {
     description: getRandomArrayItem(DESCRIPTION_ITEMS),
     dueDate,
     repeatingDays: dueDate ? DEFAULT_REPEAT_DAYS : generateRepeatingDays(),
-    color: getRandomArrayItem(COLORS),
+    color: getRandomArrayItem(OptionTasks.COLORS),
     isArchive: isTrue(),
     isFavorite: isTrue(),
   };

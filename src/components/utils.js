@@ -1,6 +1,6 @@
 import {createTask} from "./task";
 import {generateTasks} from "../mock/task";
-import {TASK_COUNT, Place, MONTH, LESS_TEN} from "./consts";
+import {OptionTasks, Place, Format} from "./consts";
 
 export const isTrue = () => Math.random() > 0.5;
 
@@ -14,7 +14,7 @@ export const getRandomArrayItem = (array) => {
   return array[randomIndex];
 };
 
-const tasks = generateTasks(TASK_COUNT);
+const tasks = generateTasks(OptionTasks.COUNT);
 
 export const renderCard = (container, count) => {
   for (let i = 0; i < count; i++) {
@@ -24,7 +24,7 @@ export const renderCard = (container, count) => {
 
 export const render = (container, template, place) => container.insertAdjacentHTML(place, template);
 
-const castTimeFormat = (value) => value < LESS_TEN ? `0${value}` : String(value);
+const castTimeFormat = (value) => value < Format.LESS_TEN ? `0${value}` : String(value);
 
 export const formatTime = (date) => {
   const hours = castTimeFormat(date.getHours());
@@ -36,7 +36,7 @@ export const formatTime = (date) => {
 export const getDataTask = (dueDate, repeatingDays) => {
   const isExpired = dueDate instanceof Date && dueDate < Date.now();
   const isDateShowing = !!dueDate;
-  const date = isDateShowing ? `${dueDate.getDate()} ${MONTH[dueDate.getMonth()]}` : ``;
+  const date = isDateShowing ? `${dueDate.getDate()} ${OptionTasks.MONTH[dueDate.getMonth()]}` : ``;
   const time = isDateShowing ? formatTime(dueDate) : ``;
   const isRepeatingTask = Object.values(repeatingDays).some(Boolean);
   const repeatClass = isRepeatingTask ? `card--repeat` : ``;
