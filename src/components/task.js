@@ -1,6 +1,6 @@
-import {getDataTask} from "./utils";
+import {createElement, getDataTask} from "./utils";
 
-export const createTask = (task) => {
+const createTask = (task) => {
   const {description, dueDate, color, repeatingDays, isArchive, isFavorite} = task;
   const {date, time, repeatClass, deadlineClass} = getDataTask(dueDate, repeatingDays);
 
@@ -53,3 +53,26 @@ export const createTask = (task) => {
         </article>`
   );
 };
+
+export default class Task {
+  constructor(task) {
+    this._task = task;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createTask(this._task);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
