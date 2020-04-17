@@ -1,4 +1,3 @@
-import {generateTasks} from "../mock/task";
 import {OptionTasks, Place, Format} from "./consts";
 
 export const isTrue = () => Math.random() > 0.5;
@@ -11,14 +10,6 @@ export const getRandomArrayItem = (array) => {
   const randomIndex = getRandomIntegerNumber(0, array.length);
 
   return array[randomIndex];
-};
-
-const tasks = generateTasks(OptionTasks.COUNT);
-
-export const renderCard = (container, count) => {
-  for (let i = 0; i < count; i++) {
-    render(container, createTask(tasks[i]), Place.BEFOREEND);
-  }
 };
 
 export const render = (container, element, place) => {
