@@ -1,11 +1,11 @@
 import {OptionTasks} from "./consts";
-import {getDataTask} from "./utils";
+import {getDataTask, createElement} from "./utils";
 import {creatColorMarkup} from "./color-markup";
 import {createRepeatDays} from "./repeat-days";
 import {renderDateShow} from "./date-show";
 import {renderRepeatTask} from "./repeat-task";
 
-export const createTaskEdit = (task) => {
+const createTaskEdit = (task) => {
   const {description, dueDate, color, repeatingDays} = task;
   const {date, time, repeatClass, deadlineClass, isDateShowing, isRepeatingTask} = getDataTask(dueDate, repeatingDays);
 
@@ -65,3 +65,26 @@ export const createTaskEdit = (task) => {
   </article>`
   );
 };
+
+export default class TaskEdit {
+  constructor(task) {
+    this._task = task;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createTaskEdit(this._task);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

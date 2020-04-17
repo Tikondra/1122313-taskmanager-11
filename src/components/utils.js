@@ -1,5 +1,3 @@
-import {createTask} from "./task";
-import {generateTasks} from "../mock/task";
 import {OptionTasks, Place, Format} from "./consts";
 
 export const isTrue = () => Math.random() > 0.5;
@@ -14,15 +12,16 @@ export const getRandomArrayItem = (array) => {
   return array[randomIndex];
 };
 
-const tasks = generateTasks(OptionTasks.COUNT);
-
-export const renderCard = (container, count) => {
-  for (let i = 0; i < count; i++) {
-    render(container, createTask(tasks[i]), Place.BEFOREEND);
+export const render = (container, element, place) => {
+  switch (place) {
+    case Place.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case Place.BEFOREEND:
+      container.append(element);
+      break;
   }
 };
-
-export const render = (container, template, place) => container.insertAdjacentHTML(place, template);
 
 const castTimeFormat = (value) => value < Format.LESS_TEN ? `0${value}` : String(value);
 
@@ -50,4 +49,11 @@ export const getDataTask = (dueDate, repeatingDays) => {
     isDateShowing,
     isRepeatingTask,
   };
+};
+
+export const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+
+  return newElement.firstChild;
 };

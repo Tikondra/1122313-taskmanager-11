@@ -1,4 +1,6 @@
-export const createBoard = () => {
+import {createElement} from "./utils";
+
+const createBoard = () => {
   return (
     `<section class="board container">
       <div class="board__filter-list">
@@ -6,7 +8,28 @@ export const createBoard = () => {
         <a href="#" class="board__filter" data-sort-type="date-up">SORT BY DATE up</a>
         <a href="#" class="board__filter" data-sort-type="date-down">SORT BY DATE down</a>
       </div>
-      <div class="board__tasks"></div>
    </section>`
   );
 };
+
+export default class Board {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createBoard();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
