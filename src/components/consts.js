@@ -3,8 +3,8 @@ export const FILTER_NAMES = [
 ];
 
 export const OptionTasks = {
-  COUNT: 27,
-  START_SHOW: 7,
+  COUNT: 17,
+  START_SHOW: 8,
   MORE_SHOW: 8,
   DAYS: [`mo`, `tu`, `we`, `th`, `fr`, `sa`, `su`],
   COLORS: [`black`, `yellow`, `blue`, `green`, `pink`],

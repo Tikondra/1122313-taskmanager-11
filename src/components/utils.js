@@ -1,4 +1,3 @@
-import {createTask} from "./task";
 import {generateTasks} from "../mock/task";
 import {OptionTasks, Place, Format} from "./consts";
 
@@ -22,7 +21,16 @@ export const renderCard = (container, count) => {
   }
 };
 
-export const render = (container, template, place) => container.insertAdjacentHTML(place, template);
+export const render = (container, element, place) => {
+  switch (place) {
+    case Place.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case Place.BEFOREEND:
+      container.append(element);
+      break;
+  }
+};
 
 const castTimeFormat = (value) => value < Format.LESS_TEN ? `0${value}` : String(value);
 
