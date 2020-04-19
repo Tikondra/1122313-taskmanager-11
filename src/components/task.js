@@ -52,7 +52,7 @@ const createTask = (task) => {
           </div>
         </article>`
   );
-}
+};
 
 export default class Task {
   constructor(task) {
