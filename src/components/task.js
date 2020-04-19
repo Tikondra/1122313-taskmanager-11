@@ -1,14 +1,14 @@
 import {createElement, getDataTask} from "./utils";
 
 const createTask = (task) => {
-  const {description, dueDate, color, repeatingDays, isArchive, isFavorite} = task;
+  const {description, dueDate, color, repeatingDays, isArchive, isFavorite, index} = task;
   const {date, time, repeatClass, deadlineClass} = getDataTask(dueDate, repeatingDays);
 
   const archiveButtonInactiveClass = isArchive ? `` : `card__btn--disabled`;
   const favoriteButtonInactiveClass = isFavorite ? `` : `card__btn--disabled`;
 
   return (
-    `<article class="card card--${color} ${repeatClass} ${deadlineClass}">
+    `<article class="card card--${color} ${repeatClass} ${deadlineClass}" id="${index}">
           <div class="card__form">
             <div class="card__inner">
               <div class="card__control">
@@ -52,7 +52,7 @@ const createTask = (task) => {
           </div>
         </article>`
   );
-};
+}
 
 export default class Task {
   constructor(task) {
