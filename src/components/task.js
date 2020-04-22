@@ -1,4 +1,5 @@
-import {createElement, getDataTask} from "./utils";
+import {getDataTask} from "./utils";
+import AbstractComponent from "./abstract-component";
 
 const createTask = (task) => {
   const {description, dueDate, color, repeatingDays, isArchive, isFavorite, index} = task;
@@ -54,25 +55,16 @@ const createTask = (task) => {
   );
 };
 
-export default class Task {
+class Task extends AbstractComponent {
   constructor(task) {
+    super();
+
     this._task = task;
-    this._element = null;
   }
 
   getTemplate() {
     return createTask(this._task);
   }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
 }
+
+export default Task;
