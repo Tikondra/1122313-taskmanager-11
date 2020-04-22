@@ -6,6 +6,10 @@ class ButtonMore extends AbstractComponent {
   getTemplate() {
     return createButtonMore();
   }
+
+  setClickHandler(handler) {
+    this.getElement().addEventListener(`click`, handler);
+  }
 }
 
 export default ButtonMore;

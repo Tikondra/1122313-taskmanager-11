@@ -18,12 +18,8 @@ let openTask;
 
 const renderTask = (taskListElement, task) => {
   const replaceTaskToEdit = () => {
-    if (openTask) {
-      replace(openTask[0], openTask[1]);
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    }
-    openTask = [taskComponent, taskEditComponent];
     replace(taskEditComponent, taskComponent);
+    openTask = true;
   };
 
   const replaceEditToTask = () => {
@@ -42,15 +38,16 @@ const renderTask = (taskListElement, task) => {
   };
 
   const taskComponent = new TaskComponent(task);
-  const editButton = taskComponent.getElement().querySelector(`.card__btn--edit`);
-  editButton.addEventListener(`click`, () => {
-    replaceTaskToEdit();
-    document.addEventListener(`keydown`, onEscKeyDown);
+  const taskEditComponent = new TaskEditComponent(task);
+
+  taskComponent.setEditButtonClickHandler(() => {
+    if (!openTask) {
+      replaceTaskToEdit();
+      document.addEventListener(`keydown`, onEscKeyDown);
+    }
   });
 
-  const taskEditComponent = new TaskEditComponent(task);
-  const editForm = taskEditComponent.getElement().querySelector(`form`);
-  editForm.addEventListener(`submit`, (evt) => {
+  taskEditComponent.setSubmitHandler((evt) => {
     evt.preventDefault();
     replaceEditToTask();
     document.removeEventListener(`keydown`, onEscKeyDown);
@@ -88,7 +85,7 @@ const renderBoard = (boardComponent, tasks) => {
     }
   };
 
-  loadMoreButtonComponent.getElement().addEventListener(`click`, onMoreView);
+  loadMoreButtonComponent.setClickHandler(onMoreView);
 };
 
 const siteMainElement = document.querySelector(`.main`);
