@@ -1,5 +1,5 @@
 import {OptionTasks} from "./consts";
-import {getDataTask} from "../utils/utils";
+import {getDataTask} from "../utils/common";
 import {creatColorMarkup} from "./color-markup";
 import {createRepeatDays} from "./repeat-days";
 import {renderDateShow} from "./date-show";

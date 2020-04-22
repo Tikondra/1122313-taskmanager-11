@@ -19,15 +19,15 @@ let openTask;
 const renderTask = (taskListElement, task) => {
   const replaceTaskToEdit = () => {
     if (openTask) {
-      replace(taskListElement, openTask[0], openTask[1]);
+      replace(openTask[0], openTask[1]);
       document.removeEventListener(`keydown`, onEscKeyDown);
     }
-    openTask = [taskComponent.getElement(), taskEditComponent.getElement()];
-    replace(taskListElement, taskEditComponent.getElement(), taskComponent.getElement());
+    openTask = [taskComponent, taskEditComponent];
+    replace(taskEditComponent, taskComponent);
   };
 
   const replaceEditToTask = () => {
-    replace(taskListElement, taskComponent.getElement(), taskEditComponent.getElement());
+    replace(taskComponent, taskEditComponent);
     openTask = null;
   };
 
