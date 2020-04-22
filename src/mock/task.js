@@ -1,5 +1,5 @@
 import {OptionTasks, Format} from "../components/consts";
-import {isTrue, getRandomIntegerNumber, getRandomArrayItem} from "../components/utils";
+import {isTrue, getRandomIntegerNumber, getRandomArrayItem} from "../utils/utils";
 
 const DESCRIPTION_ITEMS = [
   `Изучить теорию`,

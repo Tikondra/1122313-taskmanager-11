@@ -1,4 +1,4 @@
-import {OptionTasks, Place, Format} from "./consts";
+import {OptionTasks, Format} from "../components/consts";
 
 export const isTrue = () => Math.random() > 0.5;
 
@@ -10,17 +10,6 @@ export const getRandomArrayItem = (array) => {
   const randomIndex = getRandomIntegerNumber(0, array.length);
 
   return array[randomIndex];
-};
-
-export const render = (container, element, place) => {
-  switch (place) {
-    case Place.AFTERBEGIN:
-      container.prepend(element);
-      break;
-    case Place.BEFOREEND:
-      container.append(element);
-      break;
-  }
 };
 
 const castTimeFormat = (value) => value < Format.LESS_TEN ? `0${value}` : String(value);
@@ -49,11 +38,4 @@ export const getDataTask = (dueDate, repeatingDays) => {
     isDateShowing,
     isRepeatingTask,
   };
-};
-
-export const createElement = (template) => {
-  const newElement = document.createElement(`div`);
-  newElement.innerHTML = template;
-
-  return newElement.firstChild;
 };

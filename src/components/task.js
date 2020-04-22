@@ -1,4 +1,4 @@
-import {getDataTask} from "./utils";
+import {getDataTask} from "../utils/utils";
 import AbstractComponent from "./abstract-component";
 
 const createTask = (task) => {
