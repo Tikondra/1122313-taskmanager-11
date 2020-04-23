@@ -8,6 +8,7 @@ import SortComponent from "../components/sort";
 import {OptionTasks, Place} from "../components/consts";
 
 import {remove, render, replace} from "../utils/render";
+import {getSortedTasks} from "../utils/common";
 
 let openTask;
 
@@ -51,6 +52,12 @@ const renderTask = (taskListElement, task) => {
   render(taskListElement, taskComponent, Place.BEFOREEND);
 };
 
+const renderTasks = (taskListElement, tasks) => {
+  tasks.forEach((task) => {
+    renderTask(taskListElement, task);
+  });
+};
+
 class BoardController {
   constructor(container) {
     this._container = container;
@@ -62,9 +69,44 @@ class BoardController {
   }
 
   render(tasks) {
-    const tasksCopy = tasks.slice(OptionTasks.START_SHOW);
     const isAllTasksArchived = tasks.every((task) => task.isArchive);
     const container = this._container.getElement();
+    const taskListElement = this._tasksComponent.getElement();
+    let showingTasksCount = OptionTasks.START_SHOW;
+
+    const onMoreView = () => {
+      const prevTasksCount = showingTasksCount;
+      showingTasksCount += OptionTasks.MORE_SHOW;
+
+      const sortedTasks = getSortedTasks(tasks, this._sortComponent.getSortType(), prevTasksCount, showingTasksCount);
+
+      renderTasks(taskListElement, sortedTasks);
+
+      if (showingTasksCount >= tasks.length) {
+        remove(this._loadMoreButtonComponent);
+      }
+    };
+
+    const onSortRender = (sortType) => {
+      showingTasksCount = OptionTasks.MORE_SHOW;
+
+      const sortedTasks = getSortedTasks(tasks, sortType, 0, showingTasksCount);
+
+      taskListElement.innerHTML = ``;
+
+      renderTasks(taskListElement, sortedTasks);
+      renderLoadMoreButton();
+    };
+
+    const renderLoadMoreButton = () => {
+      if (OptionTasks.START_SHOW >= tasks.length) {
+        return;
+      }
+
+      render(container, this._loadMoreButtonComponent, Place.BEFOREEND);
+
+      this._loadMoreButtonComponent.setClickHandler(onMoreView);
+    };
 
     if (isAllTasksArchived) {
       render(container, this._noTasksComponent, Place.BEFOREEND);
@@ -74,25 +116,11 @@ class BoardController {
     render(container, this._sortComponent, Place.BEFOREEND);
     render(container, this._tasksComponent, Place.BEFOREEND);
 
-    const taskListElement = this._tasksComponent.getElement();
-
-    tasks.slice(0, OptionTasks.START_SHOW)
-      .forEach((task) => {
-        renderTask(taskListElement, task);
-      });
-
-    render(container, this._loadMoreButtonComponent, Place.BEFOREEND);
-
-    const onMoreView = () => {
-      tasksCopy.splice(0, OptionTasks.MORE_SHOW)
-        .forEach((task) => renderTask(taskListElement, task));
-
-      if (tasksCopy.length === 0) {
-        remove(this._loadMoreButtonComponent);
-      }
-    };
+    renderTasks(taskListElement, tasks.slice(0, showingTasksCount));
+    renderLoadMoreButton();
 
     this._loadMoreButtonComponent.setClickHandler(onMoreView);
+    this._sortComponent.setSortTypeChangeHandler(onSortRender);
   }
 }
 

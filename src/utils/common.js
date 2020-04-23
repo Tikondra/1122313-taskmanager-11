@@ -1,4 +1,4 @@
-import {OptionTasks, Format} from "../components/consts";
+import {OptionTasks, Format, SortType} from "../components/consts";
 
 export const isTrue = () => Math.random() > 0.5;
 
@@ -38,4 +38,23 @@ export const getDataTask = (dueDate, repeatingDays) => {
     isDateShowing,
     isRepeatingTask,
   };
+};
+
+export const getSortedTasks = (tasks, sortType, from, to) => {
+  let sortedTasks = [];
+  const showingTasks = tasks.slice();
+
+  switch (sortType) {
+    case SortType.DATE_UP:
+      sortedTasks = showingTasks.sort((a, b) => a.dueDate - b.dueDate);
+      break;
+    case SortType.DATE_DOWN:
+      sortedTasks = showingTasks.sort((a, b) => b.dueDate - a.dueDate);
+      break;
+    case SortType.DEFAULT:
+      sortedTasks = showingTasks;
+      break;
+  }
+
+  return sortedTasks.slice(from, to);
 };
