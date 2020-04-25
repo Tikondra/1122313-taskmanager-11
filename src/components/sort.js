@@ -17,6 +17,25 @@ class Sort extends AbstractComponent {
     super();
 
     this._currentSortType = SortType.DEFAULT;
+    this.onSortType = this.onSortType.bind(this);
+  }
+
+  onSortType(handler, evt) {
+    evt.preventDefault();
+
+    if (!evt.target.hasAttribute(`data-sort-type`)) {
+      return;
+    }
+
+    const sortType = evt.target.dataset.sortType;
+
+    if (this._currentSortType === sortType) {
+      return;
+    }
+
+    this._currentSortType = sortType;
+
+    handler(this._currentSortType);
   }
 
   getTemplate() {
@@ -25,27 +44,12 @@ class Sort extends AbstractComponent {
   }
 
   getSortType() {
+
     return this._currentSortType;
   }
 
   setSortTypeChangeHandler(handler) {
-    this.getElement().addEventListener(`click`, (evt) => {
-      evt.preventDefault();
-
-      if (evt.target.tagName !== `A`) {
-        return;
-      }
-
-      const sortType = evt.target.dataset.sortType;
-
-      if (this._currentSortType === sortType) {
-        return;
-      }
-
-      this._currentSortType = sortType;
-
-      handler(this._currentSortType);
-    });
+    this.getElement().addEventListener(`click`, this.onSortType.bind(this, handler));
   }
 }
 

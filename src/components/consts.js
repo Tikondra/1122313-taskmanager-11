@@ -39,3 +39,7 @@ export const SortType = {
   DATE_UP: `date-up`,
   DEFAULT: `default`,
 };
+
+export const EvtKey = {
+  esc: `Escape`
+};

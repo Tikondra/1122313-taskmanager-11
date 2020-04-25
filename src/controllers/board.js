@@ -8,7 +8,7 @@ import SortComponent from "../components/sort";
 import {OptionTasks, Place} from "../components/consts";
 
 import {remove, render, replace} from "../utils/render";
-import {getSortedTasks} from "../utils/common";
+import {getSortedTasks, isEscKey} from "../utils/common";
 
 let openTask;
 
@@ -24,9 +24,7 @@ const renderTask = (taskListElement, task) => {
   };
 
   const onEscKeyDown = (evt) => {
-    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
-
-    if (isEscKey) {
+    if (isEscKey(evt.key)) {
       replaceEditToTask();
       document.removeEventListener(`keydown`, onEscKeyDown);
       openTask = null;
@@ -66,47 +64,54 @@ class BoardController {
     this._sortComponent = new SortComponent();
     this._tasksComponent = new TasksComponent();
     this._loadMoreButtonComponent = new MoreButtonComponent();
+
+    this._state = OptionTasks.MORE_SHOW;
+
+    this.onMoreView = this.onMoreView.bind(this);
+    this.onSortRender = this.onSortRender.bind(this);
+    this.renderLoadMoreButton = this.renderLoadMoreButton.bind(this);
+  }
+
+  onMoreView(taskListElement, tasks) {
+    const prevTasksCount = this._state;
+    this._state += OptionTasks.MORE_SHOW;
+
+    const sortedTasks = getSortedTasks(tasks, this._sortComponent.getSortType(), prevTasksCount, this._state);
+
+    renderTasks(taskListElement, sortedTasks);
+
+    if (this._state >= tasks.length) {
+      remove(this._loadMoreButtonComponent);
+    }
+  }
+
+  onSortRender(taskListElement, tasks, sortType) {
+    this._state = OptionTasks.MORE_SHOW;
+
+    const sortedTasks = getSortedTasks(tasks, sortType, 0, this._state);
+
+    taskListElement.innerHTML = ``;
+
+    renderTasks(taskListElement, sortedTasks);
+    this.renderLoadMoreButton(tasks, taskListElement);
+  }
+
+  renderLoadMoreButton(tasks, taskListElement) {
+    const container = this._container.getElement();
+
+    if (OptionTasks.START_SHOW >= tasks.length) {
+      return;
+    }
+
+    render(container, this._loadMoreButtonComponent, Place.BEFOREEND);
+
+    this._loadMoreButtonComponent.setClickHandler(this.onMoreView.bind(this, taskListElement, tasks));
   }
 
   render(tasks) {
     const isAllTasksArchived = tasks.every((task) => task.isArchive);
     const container = this._container.getElement();
     const taskListElement = this._tasksComponent.getElement();
-    let showingTasksCount = OptionTasks.START_SHOW;
-
-    const onMoreView = () => {
-      const prevTasksCount = showingTasksCount;
-      showingTasksCount += OptionTasks.MORE_SHOW;
-
-      const sortedTasks = getSortedTasks(tasks, this._sortComponent.getSortType(), prevTasksCount, showingTasksCount);
-
-      renderTasks(taskListElement, sortedTasks);
-
-      if (showingTasksCount >= tasks.length) {
-        remove(this._loadMoreButtonComponent);
-      }
-    };
-
-    const onSortRender = (sortType) => {
-      showingTasksCount = OptionTasks.MORE_SHOW;
-
-      const sortedTasks = getSortedTasks(tasks, sortType, 0, showingTasksCount);
-
-      taskListElement.innerHTML = ``;
-
-      renderTasks(taskListElement, sortedTasks);
-      renderLoadMoreButton();
-    };
-
-    const renderLoadMoreButton = () => {
-      if (OptionTasks.START_SHOW >= tasks.length) {
-        return;
-      }
-
-      render(container, this._loadMoreButtonComponent, Place.BEFOREEND);
-
-      this._loadMoreButtonComponent.setClickHandler(onMoreView);
-    };
 
     if (isAllTasksArchived) {
       render(container, this._noTasksComponent, Place.BEFOREEND);
@@ -116,11 +121,11 @@ class BoardController {
     render(container, this._sortComponent, Place.BEFOREEND);
     render(container, this._tasksComponent, Place.BEFOREEND);
 
-    renderTasks(taskListElement, tasks.slice(0, showingTasksCount));
-    renderLoadMoreButton();
+    renderTasks(taskListElement, tasks.slice(0, this._state));
+    this.renderLoadMoreButton(tasks, taskListElement);
 
-    this._loadMoreButtonComponent.setClickHandler(onMoreView);
-    this._sortComponent.setSortTypeChangeHandler(onSortRender);
+    this._loadMoreButtonComponent.setClickHandler(this.onMoreView.bind(this, taskListElement, tasks));
+    this._sortComponent.setSortTypeChangeHandler(this.onSortRender.bind(this, taskListElement, tasks));
   }
 }
 

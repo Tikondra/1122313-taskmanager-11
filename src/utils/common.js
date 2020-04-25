@@ -1,6 +1,8 @@
-import {OptionTasks, Format, SortType} from "../components/consts";
+import {OptionTasks, Format, SortType, EvtKey} from "../components/consts";
 
 export const isTrue = () => Math.random() > 0.5;
+
+export const isEscKey = (currentKey) => currentKey === EvtKey.esc;
 
 export const getRandomIntegerNumber = (max, min = 0) => {
   return min + Math.floor(Math.random() * (max - min));
