@@ -1,4 +1,5 @@
-import {createElement, getDataTask} from "./utils";
+import {getDataTask} from "../utils/common";
+import AbstractComponent from "./abstract-component";
 
 const createTask = (task) => {
   const {description, dueDate, color, repeatingDays, isArchive, isFavorite, index} = task;
@@ -54,25 +55,21 @@ const createTask = (task) => {
   );
 };
 
-export default class Task {
+class Task extends AbstractComponent {
   constructor(task) {
+    super();
+
     this._task = task;
-    this._element = null;
   }
 
   getTemplate() {
     return createTask(this._task);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  setEditButtonClickHandler(handler) {
+    this.getElement().querySelector(`.card__btn--edit`)
+      .addEventListener(`click`, handler);
   }
 }
+
+export default Task;

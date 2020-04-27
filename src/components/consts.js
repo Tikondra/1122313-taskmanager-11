@@ -33,3 +33,13 @@ export const Place = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`
 };
+
+export const SortType = {
+  DATE_DOWN: `date-down`,
+  DATE_UP: `date-up`,
+  DEFAULT: `default`,
+};
+
+export const EvtKey = {
+  esc: `Escape`
+};

@@ -1,6 +1,8 @@
-import {OptionTasks, Place, Format} from "./consts";
+import {OptionTasks, Format, SortType, EvtKey} from "../components/consts";
 
 export const isTrue = () => Math.random() > 0.5;
+
+export const isEscKey = (currentKey) => currentKey === EvtKey.esc;
 
 export const getRandomIntegerNumber = (max, min = 0) => {
   return min + Math.floor(Math.random() * (max - min));
@@ -10,17 +12,6 @@ export const getRandomArrayItem = (array) => {
   const randomIndex = getRandomIntegerNumber(0, array.length);
 
   return array[randomIndex];
-};
-
-export const render = (container, element, place) => {
-  switch (place) {
-    case Place.AFTERBEGIN:
-      container.prepend(element);
-      break;
-    case Place.BEFOREEND:
-      container.append(element);
-      break;
-  }
 };
 
 const castTimeFormat = (value) => value < Format.LESS_TEN ? `0${value}` : String(value);
@@ -51,9 +42,21 @@ export const getDataTask = (dueDate, repeatingDays) => {
   };
 };
 
-export const createElement = (template) => {
-  const newElement = document.createElement(`div`);
-  newElement.innerHTML = template;
+export const getSortedTasks = (tasks, sortType, from, to) => {
+  let sortedTasks = [];
+  const showingTasks = tasks.slice();
 
-  return newElement.firstChild;
+  switch (sortType) {
+    case SortType.DATE_UP:
+      sortedTasks = showingTasks.sort((a, b) => a.dueDate - b.dueDate);
+      break;
+    case SortType.DATE_DOWN:
+      sortedTasks = showingTasks.sort((a, b) => b.dueDate - a.dueDate);
+      break;
+    case SortType.DEFAULT:
+      sortedTasks = showingTasks;
+      break;
+  }
+
+  return sortedTasks.slice(from, to);
 };

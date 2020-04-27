@@ -1,9 +1,10 @@
 import {OptionTasks} from "./consts";
-import {getDataTask, createElement} from "./utils";
+import {getDataTask} from "../utils/common";
 import {creatColorMarkup} from "./color-markup";
 import {createRepeatDays} from "./repeat-days";
 import {renderDateShow} from "./date-show";
 import {renderRepeatTask} from "./repeat-task";
+import AbstractComponent from "./abstract-component";
 
 const createTaskEdit = (task) => {
   const {description, dueDate, color, repeatingDays} = task;
@@ -66,25 +67,21 @@ const createTaskEdit = (task) => {
   );
 };
 
-export default class TaskEdit {
+class TaskEdit extends AbstractComponent {
   constructor(task) {
+    super();
+
     this._task = task;
-    this._element = null;
   }
 
   getTemplate() {
     return createTaskEdit(this._task);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  setSubmitHandler(handler) {
+    this.getElement().querySelector(`form`)
+      .addEventListener(`submit`, handler);
   }
 }
+
+export default TaskEdit;
