@@ -41,5 +41,10 @@ export const SortType = {
 };
 
 export const EvtKey = {
-  esc: `Escape`
+  ESC: `Escape`
+};
+
+export const Mode = {
+  DEFAULT: `default`,
+  EDIT: `edit`
 };
