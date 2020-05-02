@@ -2,7 +2,7 @@ import {OptionTasks, Format, SortType, EvtKey} from "../components/consts";
 
 export const isTrue = () => Math.random() > 0.5;
 
-export const isEscKey = (currentKey) => currentKey === EvtKey.esc;
+export const isEscKey = (currentKey) => currentKey === EvtKey.ESC;
 
 export const getRandomIntegerNumber = (max, min = 0) => {
   return min + Math.floor(Math.random() * (max - min));
@@ -23,12 +23,10 @@ export const formatTime = (date) => {
   return `${hours}:${minutes}`;
 };
 
-export const getDataTask = (dueDate, repeatingDays) => {
+export const getDataTask = (dueDate, isRepeatingTask, isDateShowing) => {
   const isExpired = dueDate instanceof Date && dueDate < Date.now();
-  const isDateShowing = !!dueDate;
-  const date = isDateShowing ? `${dueDate.getDate()} ${OptionTasks.MONTH[dueDate.getMonth()]}` : ``;
-  const time = isDateShowing ? formatTime(dueDate) : ``;
-  const isRepeatingTask = Object.values(repeatingDays).some(Boolean);
+  const date = (isDateShowing && dueDate) ? `${dueDate.getDate()} ${OptionTasks.MONTH[dueDate.getMonth()]}` : ``;
+  const time = (isDateShowing && dueDate) ? formatTime(dueDate) : ``;
   const repeatClass = isRepeatingTask ? `card--repeat` : ``;
   const deadlineClass = isExpired ? `card--deadline` : ``;
 
@@ -36,9 +34,7 @@ export const getDataTask = (dueDate, repeatingDays) => {
     date,
     time,
     repeatClass,
-    deadlineClass,
-    isDateShowing,
-    isRepeatingTask,
+    deadlineClass
   };
 };
 
