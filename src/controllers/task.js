@@ -15,23 +15,20 @@ class TaskController {
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
   }
 
-  _replaceTaskToEdit() {
-    this._onViewChange();
-    replace(this._taskEditComponent, this._taskComponent);
-    this._mode = Mode.EDIT;
-  }
+  render(task) {
+    const oldTaskComponent = this._taskComponent;
+    const oldTaskEditComponent = this._taskEditComponent;
 
-  _replaceEditToTask() {
-    document.removeEventListener(`keydown`, this._onEscKeyDown);
-    this._taskEditComponent.reset();
-    replace(this._taskComponent, this._taskEditComponent);
-    this._mode = Mode.DEFAULT;
-  }
+    this._taskComponent = new TaskComponent(task);
+    this._taskEditComponent = new TaskEditComponent(task);
 
-  _onEscKeyDown(evt) {
-    if (isEscKey(evt.key)) {
-      this._replaceEditToTask();
-      document.removeEventListener(`keydown`, this._onEscKeyDown);
+    this._addListeners(task);
+
+    if (oldTaskEditComponent && oldTaskComponent) {
+      replace(this._taskComponent, oldTaskComponent);
+      replace(this._taskEditComponent, oldTaskEditComponent);
+    } else {
+      render(this._container, this._taskComponent, Place.BEFOREEND);
     }
   }
 
@@ -41,13 +38,7 @@ class TaskController {
     }
   }
 
-  render(task) {
-    const oldTaskComponent = this._taskComponent;
-    const oldTaskEditComponent = this._taskEditComponent;
-
-    this._taskComponent = new TaskComponent(task);
-    this._taskEditComponent = new TaskEditComponent(task);
-
+  _addListeners(task) {
     this._taskComponent.setEditButtonClickHandler(() => {
       this._replaceTaskToEdit();
       document.addEventListener(`keydown`, this._onEscKeyDown);
@@ -70,14 +61,25 @@ class TaskController {
       this._replaceEditToTask();
       document.removeEventListener(`keydown`, this._onEscKeyDown);
     });
+  }
 
-    render(this._container, this._taskComponent, Place.BEFOREEND);
+  _replaceTaskToEdit() {
+    this._onViewChange();
+    replace(this._taskEditComponent, this._taskComponent);
+    this._mode = Mode.EDIT;
+  }
 
-    if (oldTaskEditComponent && oldTaskComponent) {
-      replace(this._taskComponent, oldTaskComponent);
-      replace(this._taskEditComponent, oldTaskEditComponent);
-    } else {
-      render(this._container, this._taskComponent, Place.BEFOREEND);
+  _replaceEditToTask() {
+    document.removeEventListener(`keydown`, this._onEscKeyDown);
+    this._taskEditComponent.reset();
+    replace(this._taskComponent, this._taskEditComponent);
+    this._mode = Mode.DEFAULT;
+  }
+
+  _onEscKeyDown(evt) {
+    if (isEscKey(evt.key)) {
+      this._replaceEditToTask();
+      document.removeEventListener(`keydown`, this._onEscKeyDown);
     }
   }
 }

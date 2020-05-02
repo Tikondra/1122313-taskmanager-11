@@ -40,6 +40,40 @@ class BoardController {
     this._sortComponent.setSortTypeChangeHandler(this._onSortRender);
   }
 
+  render(tasks) {
+    this._tasks = tasks;
+
+    const container = this._container.getElement();
+    const isAllTasksArchived = this._tasks.every((task) => task.isArchive);
+
+    if (isAllTasksArchived) {
+      render(container, this._noTasksComponent, Place.BEFOREEND);
+      return;
+    }
+
+    render(container, this._sortComponent, Place.BEFOREEND);
+    render(container, this._tasksComponent, Place.BEFOREEND);
+
+    const taskListElement = this._tasksComponent.getElement();
+
+    const newTasks = renderTasks(taskListElement, this._tasks.slice(0, this._state), this._onDataChange, this._onViewChange);
+    this._showedTaskControllers = this._showedTaskControllers.concat(newTasks);
+
+    this._renderLoadMoreButton();
+  }
+
+  _renderLoadMoreButton() {
+    const container = this._container.getElement();
+
+    if (OptionTasks.START_SHOW >= this._tasks.length) {
+      return;
+    }
+
+    render(container, this._loadMoreButtonComponent, Place.BEFOREEND);
+
+    this._loadMoreButtonComponent.setClickHandler(this._onMoreView);
+  }
+
   _onMoreView() {
     const taskListElement = this._tasksComponent.getElement();
     const prevTasksCount = this._state;
@@ -66,18 +100,6 @@ class BoardController {
     this._renderLoadMoreButton();
   }
 
-  _renderLoadMoreButton() {
-    const container = this._container.getElement();
-
-    if (OptionTasks.START_SHOW >= this._tasks.length) {
-      return;
-    }
-
-    render(container, this._loadMoreButtonComponent, Place.BEFOREEND);
-
-    this._loadMoreButtonComponent.setClickHandler(this._onMoreView);
-  }
-
   _onDataChange(taskController, oldData, newData) {
     const index = this._tasks.findIndex((it) => it === oldData);
 
@@ -92,28 +114,6 @@ class BoardController {
 
   _onViewChange() {
     this._showedTaskControllers.forEach((it) => it.setDefaultView());
-  }
-
-  render(tasks) {
-    this._tasks = tasks;
-
-    const container = this._container.getElement();
-    const isAllTasksArchived = this._tasks.every((task) => task.isArchive);
-
-    if (isAllTasksArchived) {
-      render(container, this._noTasksComponent, Place.BEFOREEND);
-      return;
-    }
-
-    render(container, this._sortComponent, Place.BEFOREEND);
-    render(container, this._tasksComponent, Place.BEFOREEND);
-
-    const taskListElement = this._tasksComponent.getElement();
-
-    const newTasks = renderTasks(taskListElement, this._tasks.slice(0, this._state), this._onDataChange, this._onViewChange);
-    this._showedTaskControllers = this._showedTaskControllers.concat(newTasks);
-
-    this._renderLoadMoreButton();
   }
 }
 

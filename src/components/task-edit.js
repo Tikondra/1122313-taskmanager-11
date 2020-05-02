@@ -86,6 +86,11 @@ class TaskEdit extends AbstractSmartComponent {
     this._activeColor = task.color;
     this._submitHandler = null;
 
+    this._onDateShowing = this._onDateShowing.bind(this);
+    this._onRepeatDaysShowing = this._onRepeatDaysShowing.bind(this);
+    this._onChangeRepeatDays = this._onChangeRepeatDays.bind(this);
+    this._onChangeColor = this._onChangeColor.bind(this);
+
     this._subscribeOnEvents();
   }
 
@@ -118,47 +123,56 @@ class TaskEdit extends AbstractSmartComponent {
     this.rerender();
   }
 
-  setSubmitHandler(handler) {
-    this.getElement().querySelector(`form`)
-      .addEventListener(`submit`, handler);
+  _onDateShowing() {
+    this._isDateShowing = !this._isDateShowing;
 
-    this._submitHandler = handler;
+    this.rerender();
+  }
+
+  _onRepeatDaysShowing() {
+    this._isRepeatingTask = !this._isRepeatingTask;
+
+    this.rerender();
+  }
+
+  _onChangeRepeatDays(evt) {
+    this._activeRepeatingDays[evt.target.value] = evt.target.checked;
+    this.rerender();
+  }
+
+  _onChangeColor(evt) {
+    if (evt.target.tagName === `INPUT`) {
+      this._activeColor = evt.target.value;
+      this.rerender();
+    }
   }
 
   _subscribeOnEvents() {
     const element = this.getElement();
 
     element.querySelector(`.card__date-deadline-toggle`)
-      .addEventListener(`click`, () => {
-        this._isDateShowing = !this._isDateShowing;
-
-        this.rerender();
-      });
+      .addEventListener(`click`, this._onDateShowing);
 
     element.querySelector(`.card__repeat-toggle`)
-      .addEventListener(`click`, () => {
-        this._isRepeatingTask = !this._isRepeatingTask;
-
-        this.rerender();
-      });
+      .addEventListener(`click`, this._onRepeatDaysShowing);
 
     const repeatDays = element.querySelector(`.card__repeat-days`);
     if (repeatDays) {
-      repeatDays.addEventListener(`change`, (evt) => {
-        this._activeRepeatingDays[evt.target.value] = evt.target.checked;
-        this.rerender();
-      });
+      repeatDays.addEventListener(`change`, this._onChangeRepeatDays);
     }
 
-    const colors = element.querySelectorAll(`.card__color-input`);
+    const colors = element.querySelector(`.card__colors-wrap`);
 
-    colors.forEach((input) => {
+    colors.addEventListener(`click`, this._onChangeColor);
 
-      input.addEventListener(`input`, (evt) => {
-        this._activeColor = evt.target.value;
-        this.rerender();
-      });
-    });
+    // colors.forEach((input) => input.addEventListener(`change`, this._onChangeColor));
+  }
+
+  setSubmitHandler(handler) {
+    this.getElement().querySelector(`form`)
+      .addEventListener(`submit`, handler);
+
+    this._submitHandler = handler;
   }
 }
 
