@@ -139,18 +139,31 @@ class TaskEdit extends AbstractSmartComponent {
 
   _applyFlatpickr() {
     if (this._flatpickr) {
-      this._flatpickr.destroy();
-      this._flatpickr = null;
+      this._dellFlatpickr();
     }
 
     if (this._isDateShowing) {
-      const dateElement = this.getElement().querySelector(`.card__date`);
-      this._flatpickr = flatpickr(dateElement, {
-        altInput: true,
-        allowInput: true,
-        defaultDate: this._task.dueDate || `today`,
-      });
+      this._initFlatpickr();
     }
+  }
+
+  _initFlatpickr() {
+    const dateElement = this.getElement().querySelector(`.card__date`);
+
+    this._flatpickr = flatpickr(dateElement, this._optionsFlatpickr());
+  }
+
+  _optionsFlatpickr() {
+    return {
+      altInput: true,
+      allowInput: true,
+      defaultDate: this._task.dueDate || OptionTasks.SELECT_DAY,
+    };
+  }
+
+  _dellFlatpickr() {
+    this._flatpickr.destroy();
+    this._flatpickr = null;
   }
 
   _subscribeOnEvents() {

@@ -6,6 +6,7 @@ export const OptionTasks = {
   COUNT: 17,
   START_SHOW: 8,
   MORE_SHOW: 8,
+  SELECT_DAY: `today`,
   DAYS: [`mo`, `tu`, `we`, `th`, `fr`, `sa`, `su`],
   COLORS: [`black`, `yellow`, `blue`, `green`, `pink`],
   MONTH: [
