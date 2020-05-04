@@ -5,6 +5,9 @@ import {createRepeatDays} from "./repeat-days";
 import {renderDateShow} from "./date-show";
 import {renderRepeatTask} from "./repeat-task";
 import AbstractSmartComponent from "./abstract-smart-component";
+import flatpickr from "flatpickr";
+
+import "flatpickr/dist/flatpickr.min.css";
 
 const isRepeating = (repeatingDays) => {
   return Object.values(repeatingDays).some(Boolean);
@@ -84,6 +87,7 @@ class TaskEdit extends AbstractSmartComponent {
     this._isRepeatingTask = Object.values(task.repeatingDays).some(Boolean);
     this._activeRepeatingDays = Object.assign({}, task.repeatingDays);
     this._activeColor = task.color;
+    this._flatpickr = null;
     this._submitHandler = null;
 
     this._onDateShowing = this._onDateShowing.bind(this);
@@ -91,6 +95,7 @@ class TaskEdit extends AbstractSmartComponent {
     this._onChangeRepeatDays = this._onChangeRepeatDays.bind(this);
     this._onChangeColor = this._onChangeColor.bind(this);
 
+    this._applyFlatpickr();
     this._subscribeOnEvents();
   }
 
@@ -110,6 +115,8 @@ class TaskEdit extends AbstractSmartComponent {
 
   rerender() {
     super.rerender();
+
+    this._applyFlatpickr();
   }
 
   reset() {
@@ -121,6 +128,61 @@ class TaskEdit extends AbstractSmartComponent {
     this._activeColor = task.color;
 
     this.rerender();
+  }
+
+  setSubmitHandler(handler) {
+    this.getElement().querySelector(`form`)
+      .addEventListener(`submit`, handler);
+
+    this._submitHandler = handler;
+  }
+
+  _applyFlatpickr() {
+    if (this._flatpickr) {
+      this._dellFlatpickr();
+    }
+
+    if (this._isDateShowing) {
+      this._initFlatpickr();
+    }
+  }
+
+  _initFlatpickr() {
+    const dateElement = this.getElement().querySelector(`.card__date`);
+
+    this._flatpickr = flatpickr(dateElement, this._optionsFlatpickr());
+  }
+
+  _optionsFlatpickr() {
+    return {
+      altInput: true,
+      allowInput: true,
+      defaultDate: this._task.dueDate || OptionTasks.SELECT_DAY,
+    };
+  }
+
+  _dellFlatpickr() {
+    this._flatpickr.destroy();
+    this._flatpickr = null;
+  }
+
+  _subscribeOnEvents() {
+    const element = this.getElement();
+
+    element.querySelector(`.card__date-deadline-toggle`)
+      .addEventListener(`click`, this._onDateShowing);
+
+    element.querySelector(`.card__repeat-toggle`)
+      .addEventListener(`click`, this._onRepeatDaysShowing);
+
+    const repeatDays = element.querySelector(`.card__repeat-days`);
+    if (repeatDays) {
+      repeatDays.addEventListener(`change`, this._onChangeRepeatDays);
+    }
+
+    const colors = element.querySelector(`.card__colors-wrap`);
+
+    colors.addEventListener(`click`, this._onChangeColor);
   }
 
   _onDateShowing() {
@@ -145,34 +207,6 @@ class TaskEdit extends AbstractSmartComponent {
       this._activeColor = evt.target.value;
       this.rerender();
     }
-  }
-
-  _subscribeOnEvents() {
-    const element = this.getElement();
-
-    element.querySelector(`.card__date-deadline-toggle`)
-      .addEventListener(`click`, this._onDateShowing);
-
-    element.querySelector(`.card__repeat-toggle`)
-      .addEventListener(`click`, this._onRepeatDaysShowing);
-
-    const repeatDays = element.querySelector(`.card__repeat-days`);
-    if (repeatDays) {
-      repeatDays.addEventListener(`change`, this._onChangeRepeatDays);
-    }
-
-    const colors = element.querySelector(`.card__colors-wrap`);
-
-    colors.addEventListener(`click`, this._onChangeColor);
-
-    // colors.forEach((input) => input.addEventListener(`change`, this._onChangeColor));
-  }
-
-  setSubmitHandler(handler) {
-    this.getElement().querySelector(`form`)
-      .addEventListener(`submit`, handler);
-
-    this._submitHandler = handler;
   }
 }
 
