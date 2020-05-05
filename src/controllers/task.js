@@ -1,6 +1,6 @@
 import TaskComponent from "../components/task";
 import TaskEditComponent from "../components/task-edit";
-import {render, replace} from "../utils/render";
+import {render, replace, remove} from "../utils/render";
 import {isEscKey} from "../utils/common";
 import {Place, Mode} from "../components/consts";
 
@@ -36,6 +36,12 @@ class TaskController {
     if (this._mode !== Mode.DEFAULT) {
       this._replaceEditToTask();
     }
+  }
+
+  destroy() {
+    remove(this._taskEditComponent);
+    remove(this._taskComponent);
+    document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 
   _addListeners(task) {

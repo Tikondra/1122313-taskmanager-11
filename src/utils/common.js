@@ -3,6 +3,15 @@ import moment from "moment";
 
 export const isTrue = () => Math.random() > 0.5;
 
+export const makeCounter = () => {
+  function counter() {
+    return counter.currentCount++;
+  }
+  counter.currentCount = 0;
+
+  return counter;
+};
+
 export const isEscKey = (currentKey) => currentKey === EvtKey.ESC;
 
 export const getRandomIntegerNumber = (max, min = 0) => {
