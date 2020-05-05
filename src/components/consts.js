@@ -36,17 +36,22 @@ export const Place = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`
 };
-
 export const SortType = {
   DATE_DOWN: `date-down`,
   DATE_UP: `date-up`,
   DEFAULT: `default`,
 };
-
+export const FilterType = {
+  ALL: `all`,
+  ARCHIVE: `archive`,
+  FAVORITES: `favorites`,
+  OVERDUE: `overdue`,
+  REPEATING: `repeating`,
+  TODAY: `today`,
+};
 export const EvtKey = {
   ESC: `Escape`
 };
-
 export const Mode = {
   DEFAULT: `default`,
   EDIT: `edit`
