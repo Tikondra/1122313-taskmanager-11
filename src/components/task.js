@@ -1,4 +1,5 @@
 import {getDataTask} from "../utils/common";
+import {encode} from "he";
 import AbstractComponent from "./abstract-component";
 
 const createButtonMarkup = (name, isActive = true) => {
@@ -13,15 +14,16 @@ const createButtonMarkup = (name, isActive = true) => {
 };
 
 const createTask = (task) => {
-  const {description, dueDate, color, repeatingDays, index} = task;
+  const {description: notSanitizedDescription, dueDate, color, repeatingDays} = task;
   const {date, time, repeatClass, deadlineClass} = getDataTask(dueDate, repeatingDays);
 
   const editButton = createButtonMarkup(`edit`);
   const archiveButton = createButtonMarkup(`archive`, !task.isArchive);
   const favoritesButton = createButtonMarkup(`favorites`, !task.isFavorite);
+  const description = encode(notSanitizedDescription);
 
   return (
-    `<article class="card card--${color} ${repeatClass} ${deadlineClass}" id="${index}">
+    `<article class="card card--${color} ${repeatClass} ${deadlineClass}">
           <div class="card__form">
             <div class="card__inner">
               <div class="card__control">

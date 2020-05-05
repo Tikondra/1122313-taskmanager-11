@@ -2,13 +2,20 @@ export const FILTER_NAMES = [
   `all`, `overdue`, `today`, `favorites`, `repeating`, `archive`
 ];
 
+export const COLOR = {
+  BLACK: `black`,
+  YELLOW: `yellow`,
+  BLUE: `blue`,
+  GREEN: `green`,
+  PINK: `pink`,
+};
 export const OptionTasks = {
   COUNT: 17,
   START_SHOW: 8,
   MORE_SHOW: 8,
   SELECT_DAY: `today`,
   DAYS: [`mo`, `tu`, `we`, `th`, `fr`, `sa`, `su`],
-  COLORS: [`black`, `yellow`, `blue`, `green`, `pink`],
+  COLORS: Object.values(COLOR),
   MONTH: [
     `January`,
     `February`,
@@ -22,7 +29,9 @@ export const OptionTasks = {
     `October`,
     `November`,
     `December`,
-  ]
+  ],
+  MIN_DESCRIPTION_LENGTH: 1,
+  MAX_DESCRIPTION_LENGTH: 240
 };
 export const Format = {
   LESS_TEN: 10,
@@ -53,6 +62,28 @@ export const EvtKey = {
   ESC: `Escape`
 };
 export const Mode = {
+  ADDING: `adding`,
   DEFAULT: `default`,
   EDIT: `edit`
+};
+export const MenuItem = {
+  NEW_TASK: `control__new-task`,
+  STATISTICS: `control__statistic`,
+  TASKS: `control__task`,
+};
+export const EmptyTask = {
+  description: ``,
+  dueDate: null,
+  repeatingDays: {
+    "mo": false,
+    "tu": false,
+    "we": false,
+    "th": false,
+    "fr": false,
+    "sa": false,
+    "su": false,
+  },
+  color: COLOR.BLACK,
+  isFavorite: false,
+  isArchive: false,
 };

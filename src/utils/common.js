@@ -1,4 +1,4 @@
-import {SortType, EvtKey, Format} from "../components/consts";
+import {SortType, EvtKey, Format, OptionTasks} from "../components/consts";
 import moment from "moment";
 
 export const isTrue = () => Math.random() > 0.5;
@@ -32,11 +32,11 @@ export const formatDate = (date) => {
   return moment(date).format(Format.DATE);
 };
 
-export const getDataTask = (dueDate, isRepeatingTask) => {
+export const getDataTask = (dueDate, repeatingDays) => {
   const isExpired = dueDate instanceof Date && isOverdueDate(dueDate, new Date());
   const date = dueDate ? formatDate(dueDate) : ``;
   const time = dueDate ? formatTime(dueDate) : ``;
-  const repeatClass = isRepeatingTask ? `card--repeat` : ``;
+  const repeatClass = isRepeating(repeatingDays) ? `card--repeat` : ``;
   const deadlineClass = isExpired ? `card--deadline` : ``;
 
   return {
@@ -78,4 +78,11 @@ export const isOneDay = (dateA, dateB) => {
   const a = moment(dateA);
   const b = moment(dateB);
   return a.diff(b, `days`) === 0 && dateA.getDate() === dateB.getDate();
+};
+
+export const isAllowableDescriptionLength = (description) => {
+  const length = description.length;
+
+  return length >= OptionTasks.MIN_DESCRIPTION_LENGTH &&
+    length <= OptionTasks.MAX_DESCRIPTION_LENGTH;
 };

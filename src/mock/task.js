@@ -1,5 +1,5 @@
 import {OptionTasks, Format} from "../components/consts";
-import {isTrue, getRandomIntegerNumber, getRandomArrayItem, makeCounter} from "../utils/common";
+import {isTrue, getRandomIntegerNumber, getRandomArrayItem} from "../utils/common";
 
 const DESCRIPTION_ITEMS = [
   `Изучить теорию`,
@@ -17,8 +17,6 @@ const DEFAULT_REPEAT_DAYS = {
   "su": false,
 };
 
-const taskIdCounter = makeCounter();
-
 const getDay = (days, day) => Object.assign(days, {[day]: isTrue()});
 
 const generateRepeatingDays = () => OptionTasks.DAYS.reduce(getDay, {});
@@ -35,10 +33,9 @@ const getRandomDate = () => {
 
 const generateTask = () => {
   const dueDate = isTrue() ? null : getRandomDate();
-  const id = `task${taskIdCounter() + 1}`;
 
   return {
-    id,
+    id: String(new Date() + Math.random()),
     description: getRandomArrayItem(DESCRIPTION_ITEMS),
     dueDate,
     repeatingDays: dueDate ? DEFAULT_REPEAT_DAYS : generateRepeatingDays(),
