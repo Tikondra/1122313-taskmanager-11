@@ -16,12 +16,14 @@ class Tasks {
 
   updateTask(id, task) {
     const index = this._tasks.findIndex((it) => it.id === id);
+    const from = this._tasks.slice(0, index);
+    const to = this._tasks.slice(index + 1);
 
     if (index === -1) {
       return false;
     }
 
-    this._tasks = [].concat(this._tasks.slice(0, index), task, this._tasks.slice(index + 1));
+    this._tasks = [...from, task, ...to];
 
     this._callHandlers(this._dataChangeHandlers);
 
