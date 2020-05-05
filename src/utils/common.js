@@ -1,4 +1,4 @@
-import {SortType, EvtKey} from "../components/consts";
+import {SortType, EvtKey, Format} from "../components/consts";
 import moment from "moment";
 
 export const isTrue = () => Math.random() > 0.5;
@@ -16,17 +16,17 @@ export const getRandomArrayItem = (array) => {
 };
 
 export const formatTime = (date) => {
-  return moment(date).format(`hh:mm`);
+  return moment(date).format(Format.TIME);
 };
 
 export const formatDate = (date) => {
-  return moment(date).format(`DD MMMM`);
+  return moment(date).format(Format.DATE);
 };
 
-export const getDataTask = (dueDate, isRepeatingTask, isDateShowing) => {
+export const getDataTask = (dueDate, isRepeatingTask) => {
   const isExpired = dueDate instanceof Date && dueDate < Date.now();
-  const date = isDateShowing ? formatDate(dueDate) : ``;
-  const time = isDateShowing ? formatTime(dueDate) : ``;
+  const date = dueDate ? formatDate(dueDate) : ``;
+  const time = dueDate ? formatTime(dueDate) : ``;
   const repeatClass = isRepeatingTask ? `card--repeat` : ``;
   const deadlineClass = isExpired ? `card--deadline` : ``;
 

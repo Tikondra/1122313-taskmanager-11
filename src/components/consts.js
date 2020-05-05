@@ -29,6 +29,8 @@ export const Format = {
   DATE_RANGE: 8,
   POSITIVE: 1,
   NEGATIVE: -1,
+  TIME: `hh:mm`,
+  DATE: `DD MMMM`
 };
 export const Place = {
   AFTERBEGIN: `afterbegin`,
