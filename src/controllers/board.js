@@ -80,12 +80,13 @@ class BoardController {
   }
 
   _renderLoadMoreButton() {
-    const container = this._container.getElement();
+    remove(this._loadMoreButtonComponent);
 
     if (OptionTasks.START_SHOW >= this._tasksModel.getTasks().length) {
       return;
     }
 
+    const container = this._container.getElement();
     render(container, this._loadMoreButtonComponent, Place.BEFOREEND);
 
     this._loadMoreButtonComponent.setClickHandler(this._onMoreView);
@@ -108,13 +109,12 @@ class BoardController {
   }
 
   _onSortRender(sortType) {
-    const taskListElement = this._tasksComponent.getElement();
-    const sortedTasks = getSortedTasks(this._tasksModel.getTasks(), sortType, 0, this._state);
     this._state = OptionTasks.MORE_SHOW;
+    const sortedTasks = getSortedTasks(this._tasksModel.getTasks(), sortType, 0, this._state);
 
-    taskListElement.innerHTML = ``;
+    this._removeTasks();
+    this._renderTasks(sortedTasks);
 
-    this._showedTaskControllers = renderTasks(taskListElement, sortedTasks, this._onDataChange, this._onViewChange);
     this._renderLoadMoreButton();
   }
 

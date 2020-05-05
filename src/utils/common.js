@@ -33,7 +33,7 @@ export const formatDate = (date) => {
 };
 
 export const getDataTask = (dueDate, isRepeatingTask) => {
-  const isExpired = dueDate instanceof Date && dueDate < Date.now();
+  const isExpired = dueDate instanceof Date && isOverdueDate(dueDate, new Date());
   const date = dueDate ? formatDate(dueDate) : ``;
   const time = dueDate ? formatTime(dueDate) : ``;
   const repeatClass = isRepeatingTask ? `card--repeat` : ``;
