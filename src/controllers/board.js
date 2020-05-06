@@ -4,7 +4,7 @@ import MoreButtonComponent from "../components/button-more";
 import SortComponent from "../components/sort";
 import TaskController from "./task";
 
-import {OptionTasks, Place, Mode as TaskControllerMode, EmptyTask} from "../components/consts";
+import {OptionTasks, Place, Mode as TaskControllerMode, emptyTask} from "../components/consts";
 
 import {remove, render} from "../utils/render";
 import {getSortedTasks} from "../utils/common";
@@ -67,7 +67,7 @@ class BoardController {
 
     const taskListElement = this._tasksComponent.getElement();
     this._creatingTask = new TaskController(taskListElement, this._onDataChange, this._onViewChange);
-    this._creatingTask.render(EmptyTask, TaskControllerMode.ADDING);
+    this._creatingTask.render(emptyTask, TaskControllerMode.ADDING);
   }
 
   _removeTasks() {
@@ -113,6 +113,7 @@ class BoardController {
 
   _addTask(taskController, oldData, newData) {
     this._creatingTask = null;
+
     if (newData === null) {
       taskController.destroy();
       this._updateTasks(this._state);
@@ -122,6 +123,7 @@ class BoardController {
 
       if (this._state % OptionTasks.MORE_SHOW === 0) {
         const destroyedTask = this._showedTaskControllers.pop();
+
         destroyedTask.destroy();
       }
 
@@ -164,7 +166,7 @@ class BoardController {
   }
 
   _onDataChange(taskController, oldData, newData) {
-    if (oldData === EmptyTask) {
+    if (oldData === emptyTask) {
       this._addTask(taskController, oldData, newData);
     } else if (newData === null) {
       this._deleteTask(taskController, oldData);

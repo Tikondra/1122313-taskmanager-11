@@ -2,7 +2,7 @@ import TaskComponent from "../components/task";
 import TaskEditComponent from "../components/task-edit";
 import {render, replace, remove} from "../utils/render";
 import {isEscKey} from "../utils/common";
-import {Place, Mode, EmptyTask} from "../components/consts";
+import {Place, Mode, emptyTask} from "../components/consts";
 
 class TaskController {
   constructor(container, onDataChange, onViewChange) {
@@ -105,7 +105,7 @@ class TaskController {
   _onEscKeyDown(evt) {
     if (isEscKey(evt.key)) {
       if (this._mode === Mode.ADDING) {
-        this._onDataChange(this, EmptyTask, null);
+        this._onDataChange(this, emptyTask, null);
       }
       this._replaceEditToTask();
       document.removeEventListener(`keydown`, this._onEscKeyDown);
