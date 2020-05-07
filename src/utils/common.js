@@ -1,7 +1,16 @@
-import {SortType, EvtKey} from "../components/consts";
+import {SortType, EvtKey, Format, OptionTasks} from "../components/consts";
 import moment from "moment";
 
 export const isTrue = () => Math.random() > 0.5;
+
+export const makeCounter = () => {
+  function counter() {
+    return counter.currentCount++;
+  }
+  counter.currentCount = 0;
+
+  return counter;
+};
 
 export const isEscKey = (currentKey) => currentKey === EvtKey.ESC;
 
@@ -16,18 +25,18 @@ export const getRandomArrayItem = (array) => {
 };
 
 export const formatTime = (date) => {
-  return moment(date).format(`hh:mm`);
+  return moment(date).format(Format.TIME);
 };
 
 export const formatDate = (date) => {
-  return moment(date).format(`DD MMMM`);
+  return moment(date).format(Format.DATE);
 };
 
-export const getDataTask = (dueDate, isRepeatingTask, isDateShowing) => {
-  const isExpired = dueDate instanceof Date && dueDate < Date.now();
-  const date = isDateShowing ? formatDate(dueDate) : ``;
-  const time = isDateShowing ? formatTime(dueDate) : ``;
-  const repeatClass = isRepeatingTask ? `card--repeat` : ``;
+export const getDataTask = (dueDate, repeatingDays) => {
+  const isExpired = dueDate instanceof Date && isOverdueDate(dueDate, new Date());
+  const date = dueDate ? formatDate(dueDate) : ``;
+  const time = dueDate ? formatTime(dueDate) : ``;
+  const repeatClass = isRepeating(repeatingDays) ? `card--repeat` : ``;
   const deadlineClass = isExpired ? `card--deadline` : ``;
 
   return {
@@ -55,4 +64,25 @@ export const getSortedTasks = (tasks, sortType, from, to) => {
   }
 
   return sortedTasks.slice(from, to);
+};
+
+export const isRepeating = (repeatingDays) => {
+  return Object.values(repeatingDays).some(Boolean);
+};
+
+export const isOverdueDate = (dueDate, date) => {
+  return dueDate < date && !isOneDay(date, dueDate);
+};
+
+export const isOneDay = (dateA, dateB) => {
+  const a = moment(dateA);
+  const b = moment(dateB);
+  return a.diff(b, `days`) === 0 && dateA.getDate() === dateB.getDate();
+};
+
+export const isAllowableDescriptionLength = (description) => {
+  const length = description.length;
+
+  return length >= OptionTasks.MIN_DESCRIPTION_LENGTH &&
+    length <= OptionTasks.MAX_DESCRIPTION_LENGTH;
 };
