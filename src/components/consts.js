@@ -99,3 +99,11 @@ export const emptyTask = {
   isFavorite: false,
   isArchive: false,
 };
+
+export const ColorToHex = {
+  black: `#000000`,
+  blue: `#0c5cdd`,
+  green: `#31b55c`,
+  pink: `#ff3cb9`,
+  yellow: `#ffe125`,
+};
