@@ -10,6 +10,7 @@ import {generateTasks} from "./mock/task";
 import {OptionTasks, Place, MenuItem} from "./components/consts";
 
 import {render} from "./utils/render";
+import {getDateFrom} from "./utils/common";
 
 const siteMainElement = document.querySelector(`.main`);
 const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
@@ -35,11 +36,8 @@ const boardController = new BoardController(boardComponent, tasksModel);
 boardController.render();
 
 const dateTo = new Date();
-const dateFrom = (() => {
-  const d = new Date(dateTo);
-  d.setDate(d.getDate() - 7);
-  return d;
-})();
+const dateFrom = getDateFrom(dateTo);
+
 const statisticsComponent = new StatisticsComponent({tasks: tasksModel, dateFrom, dateTo});
 render(siteMainElement, statisticsComponent, Place.BEFOREEND);
 statisticsComponent.hide();
@@ -62,3 +60,4 @@ siteMenuComponent.setOnChange((menuItem) => {
       break;
   }
 });
+

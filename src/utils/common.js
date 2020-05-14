@@ -86,3 +86,9 @@ export const isAllowableDescriptionLength = (description) => {
   return length >= OptionTasks.MIN_DESCRIPTION_LENGTH &&
     length <= OptionTasks.MAX_DESCRIPTION_LENGTH;
 };
+
+export const getDateFrom = (dateTo) => {
+  const dateFrom = new Date(dateTo);
+  dateFrom.setDate(dateFrom.getDate() - Format.DATE_RANGE);
+  return dateFrom;
+};
