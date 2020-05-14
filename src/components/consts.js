@@ -1,6 +1,7 @@
 export const FILTER_NAMES = [
   `all`, `overdue`, `today`, `favorites`, `repeating`, `archive`
 ];
+export const HIDDEN_CLASS = `visually-hidden`;
 
 export const Color = {
   BLACK: `black`,
@@ -97,4 +98,12 @@ export const emptyTask = {
   color: Color.BLACK,
   isFavorite: false,
   isArchive: false,
+};
+
+export const ColorToHex = {
+  black: `#000000`,
+  blue: `#0c5cdd`,
+  green: `#31b55c`,
+  pink: `#ff3cb9`,
+  yellow: `#ffe125`,
 };
