@@ -2,6 +2,7 @@ export const FILTER_NAMES = [
   `all`, `overdue`, `today`, `favorites`, `repeating`, `archive`
 ];
 export const HIDDEN_CLASS = `visually-hidden`;
+export const AUTHORIZATION = `Basic hgdjfhkjdhsfsldjfls`;
 
 export const Color = {
   BLACK: `black`,
