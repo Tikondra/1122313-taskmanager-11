@@ -1,12 +1,21 @@
 import Task from "./models/task";
-import {Method} from "./components/consts";
+import {Code, Method, ApiOption} from "./components/consts";
 
 const checkStatus = (response) => {
-  if (response.status >= 200 && response.status < 300) {
+  if (response.status >= Code.OK && response.status < Code.NOT_OK) {
     return response;
   } else {
     throw new Error(`${response.status}: ${response.statusText}`);
   }
+};
+
+const getConfigFetch = (data, url, method) => {
+  return {
+    url,
+    method,
+    body: JSON.stringify(data.toRAW()),
+    headers: new Headers(ApiOption.CONTENT_TYPE)
+  };
 };
 
 const API = class {
@@ -16,35 +25,34 @@ const API = class {
   }
 
   getTasks() {
-    return this._load({url: `tasks`})
+    return this._load({url: ApiOption.TASKS})
       .then((response) => response.json())
-      .then(Task.parseTasks);
+      .then(Task.parseTasks)
+      .catch((err) => {
+        throw err;
+      });
   }
 
   createTask(task) {
-    return this._load({
-      url: `tasks`,
-      method: Method.POST,
-      body: JSON.stringify(task.toRAW()),
-      headers: new Headers({"Content-Type": `application/json`})
-    })
+    return this._load(getConfigFetch(task, ApiOption.TASKS, Method.POST))
       .then((response) => response.json())
-      .then(Task.parseTask);
+      .then(Task.parseTask)
+      .catch((err) => {
+        throw err;
+      });
   }
 
   updateTask(id, data) {
-    return this._load({
-      url: `tasks/${id}`,
-      method: Method.PUT,
-      body: JSON.stringify(data.toRAW()),
-      headers: new Headers({"Content-Type": `application/json`})
-    })
+    return this._load(getConfigFetch(data, `${ApiOption.TASKS}/${id}`, Method.PUT))
       .then((response) => response.json())
-      .then(Task.parseTask);
+      .then(Task.parseTask)
+      .catch((err) => {
+        throw err;
+      });
   }
 
   deleteTask(id) {
-    return this._load({url: `tasks/${id}`, method: Method.DELETE});
+    return this._load({url: `${ApiOption.TASKS}/${id}`, method: Method.DELETE});
   }
 
   _load({url, method = Method.GET, body = null, headers = new Headers()}) {

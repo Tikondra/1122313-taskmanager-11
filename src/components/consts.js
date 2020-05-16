@@ -2,8 +2,6 @@ export const FILTER_NAMES = [
   `all`, `overdue`, `today`, `favorites`, `repeating`, `archive`
 ];
 export const HIDDEN_CLASS = `visually-hidden`;
-export const AUTHORIZATION = `Basic hgdjfh786kjdsfsldjfls`;
-export const END_POINT = `https://11.ecmascript.pages.academy/task-manager`;
 
 export const Color = {
   BLACK: `black`,
@@ -38,6 +36,13 @@ export const OptionTasks = {
   MONTH: Object.values(Month),
   MIN_DESCRIPTION_LENGTH: 1,
   MAX_DESCRIPTION_LENGTH: 240
+};
+
+export const ApiOption = {
+  TASKS: `tasks`,
+  END_POINT: `https://11.ecmascript.pages.academy/task-manager`,
+  AUTHORIZATION: `Basic hgdjfh786kjdsfsldjfls`,
+  CONTENT_TYPE: {"Content-Type": `application/json`},
 };
 
 export const Format = {
@@ -118,7 +123,12 @@ export const Method = {
   DELETE: `DELETE`
 };
 
+export const Code = {
+  OK: 200,
+  NOT_OK: 300
+};
+
 export const DefaultData = {
-  deleteButtonText: `Delete`,
-  saveButtonText: `Save`,
+  DELETE_BTN: `Delete`,
+  SAVE_BTN: `Save`,
 };

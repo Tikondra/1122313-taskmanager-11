@@ -23,8 +23,8 @@ const createTaskEdit = (task, options = {}) => {
   const colorsMarkup = creatColorMarkup(OptionTasks.COLORS, activeColor);
   const repeatDays = createRepeatDays(OptionTasks.DAYS, activeRepeatingDays);
 
-  const deleteButtonText = externalData.deleteButtonText;
-  const saveButtonText = externalData.saveButtonText;
+  const deleteButtonText = externalData.DELETE_BTN;
+  const saveButtonText = externalData.SAVE_BTN;
 
   const getFlag = (exist) => exist ? `yes` : `no`;
 

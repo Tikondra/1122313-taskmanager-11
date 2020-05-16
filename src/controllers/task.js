@@ -83,15 +83,17 @@ class TaskController {
     this._taskEditComponent.getElement().style.animation = `shake ${Format.SHAKE_ANIMATION_TIMEOUT / 1000}s`;
     this._taskComponent.getElement().style.animation = `shake ${Format.SHAKE_ANIMATION_TIMEOUT / 1000}s`;
 
-    setTimeout(() => {
-      this._taskEditComponent.getElement().style.animation = ``;
-      this._taskComponent.getElement().style.animation = ``;
+    setTimeout(this._setTimeout, Format.SHAKE_ANIMATION_TIMEOUT);
+  }
 
-      this._taskEditComponent.setData({
-        saveButtonText: `Save`,
-        deleteButtonText: `Delete`,
-      });
-    }, Format.SHAKE_ANIMATION_TIMEOUT);
+  _setTimeout() {
+    this._taskEditComponent.getElement().style.animation = ``;
+    this._taskComponent.getElement().style.animation = ``;
+
+    this._taskEditComponent.setData({
+      saveButtonText: `Save`,
+      deleteButtonText: `Delete`,
+    });
   }
 
   _addListeners(task) {
@@ -121,7 +123,7 @@ class TaskController {
       const data = parseFormData(formData);
 
       this._taskEditComponent.setData({
-        saveButtonText: `Saving...`,
+        SAVE_BTN: `Saving...`,
       });
 
       this._onDataChange(this, task, data);
@@ -129,7 +131,7 @@ class TaskController {
 
     this._taskEditComponent.setDeleteButtonClickHandler(() => {
       this._taskEditComponent.setData({
-        deleteButtonText: `Deleting...`,
+        DELETE_BTN: `Deleting...`,
       });
 
       this._onDataChange(this, task, null);

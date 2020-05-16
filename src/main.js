@@ -7,12 +7,12 @@ import StatisticsComponent from "./components/statistics";
 import TasksModel from "./models/tasks.js";
 import {render} from "./utils/render";
 import {getDateFrom} from "./utils/common";
-import {Place, MenuItem, AUTHORIZATION, END_POINT} from "./components/consts";
+import {Place, MenuItem, ApiOption} from "./components/consts";
 
 const dateTo = new Date();
 const dateFrom = getDateFrom(dateTo);
 
-const api = new API(END_POINT, AUTHORIZATION);
+const api = new API(ApiOption.END_POINT, ApiOption.AUTHORIZATION);
 const tasksModel = new TasksModel();
 
 const siteMainElement = document.querySelector(`.main`);

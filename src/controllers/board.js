@@ -112,19 +112,34 @@ class BoardController {
     this._loadMoreButtonComponent.setClickHandler(this._onMoreView);
   }
 
+  _editTask(taskModel, id, taskController) {
+    const isSuccess = this._tasksModel.updateTask(id, taskModel);
+
+    if (isSuccess) {
+      taskController.render(taskModel, TaskControllerMode.DEFAULT);
+      this._updateTasks(this._state);
+    }
+  }
+
   _changeTask(taskController, oldData, newData) {
     this._api.updateTask(oldData.id, newData)
-      .then((taskModel) => {
-        const isSuccess = this._tasksModel.updateTask(oldData.id, taskModel);
+      .then((response) => this._editTask(response, oldData.id, taskController))
+      .catch(taskController.shake);
+  }
 
-        if (isSuccess) {
-          taskController.render(taskModel, TaskControllerMode.DEFAULT);
-          this._updateTasks(this._state);
-        }
-      })
-      .catch(() => {
-        taskController.shake();
-      });
+  _addTaskCallback(taskModel, taskController) {
+    this._tasksModel.addTask(taskModel);
+    taskController.render(taskModel, TaskControllerMode.DEFAULT);
+
+    if (this._state % OptionTasks.MORE_SHOW === 0) {
+      const destroyedTask = this._showedTaskControllers.pop();
+      destroyedTask.destroy();
+    }
+
+    this._showedTaskControllers = [].concat(taskController, this._showedTaskControllers);
+    this._state = this._showedTaskControllers.length;
+
+    this._renderLoadMoreButton();
   }
 
   _addTask(taskController, oldData, newData) {
@@ -135,35 +150,20 @@ class BoardController {
       this._updateTasks(this._state);
     } else {
       this._api.createTask(newData)
-        .then((taskModel) => {
-          this._tasksModel.addTask(taskModel);
-          taskController.render(taskModel, TaskControllerMode.DEFAULT);
-
-          if (this._state % OptionTasks.MORE_SHOW === 0) {
-            const destroyedTask = this._showedTaskControllers.pop();
-            destroyedTask.destroy();
-          }
-
-          this._showedTaskControllers = [].concat(taskController, this._showedTaskControllers);
-          this._state = this._showedTaskControllers.length;
-
-          this._renderLoadMoreButton();
-        })
-        .catch(() => {
-          taskController.shake();
-        });
+        .then((response) => this._addTaskCallback(response, taskController))
+        .catch(taskController.shake);
     }
+  }
+
+  _deleteApiTask(id) {
+    this._tasksModel.removeTask(id);
+    this._updateTasks(this._state);
   }
 
   _deleteTask(taskController, oldData) {
     this._api.deleteTask(oldData.id)
-      .then(() => {
-        this._tasksModel.removeTask(oldData.id);
-        this._updateTasks(this._state);
-      })
-      .catch(() => {
-        taskController.shake();
-      });
+      .then(() => this._deleteApiTask(oldData.id))
+      .catch(taskController.shake);
   }
 
   _onMoreView() {
