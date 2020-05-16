@@ -7,12 +7,12 @@ import StatisticsComponent from "./components/statistics";
 import TasksModel from "./models/tasks.js";
 import {render} from "./utils/render";
 import {getDateFrom} from "./utils/common";
-import {Place, MenuItem, AUTHORIZATION} from "./components/consts";
+import {Place, MenuItem, AUTHORIZATION, END_POINT} from "./components/consts";
 
 const dateTo = new Date();
 const dateFrom = getDateFrom(dateTo);
 
-const api = new API(AUTHORIZATION);
+const api = new API(END_POINT, AUTHORIZATION);
 const tasksModel = new TasksModel();
 
 const siteMainElement = document.querySelector(`.main`);
@@ -21,7 +21,7 @@ const siteMenuComponent = new SiteMenuComponent();
 const statisticsComponent = new StatisticsComponent({tasks: tasksModel, dateFrom, dateTo});
 
 const boardComponent = new BoardComponent();
-const boardController = new BoardController(boardComponent, tasksModel);
+const boardController = new BoardController(boardComponent, tasksModel, api);
 const filterController = new FilterController(siteMainElement, tasksModel);
 
 render(siteHeaderElement, siteMenuComponent, Place.BEFOREEND);

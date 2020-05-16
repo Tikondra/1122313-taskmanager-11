@@ -20,9 +20,10 @@ const renderTasks = (taskListElement, tasks, onDataChange, onViewChange) => {
 };
 
 class BoardController {
-  constructor(container, tasksModel) {
+  constructor(container, tasksModel, api) {
     this._container = container;
     this._tasksModel = tasksModel;
+    this._api = api;
 
     this._showedTaskControllers = [];
     this._state = OptionTasks.MORE_SHOW;
@@ -112,11 +113,15 @@ class BoardController {
   }
 
   _changeTask(taskController, oldData, newData) {
-    const isSuccess = this._tasksModel.updateTask(oldData.id, newData);
+    this._api.updateTask(oldData.id, newData)
+      .then((taskModel) => {
+        const isSuccess = this._tasksModel.updateTask(oldData.id, taskModel);
 
-    if (isSuccess) {
-      taskController.render(newData, TaskControllerMode.DEFAULT);
-    }
+        if (isSuccess) {
+          taskController.render(taskModel, TaskControllerMode.DEFAULT);
+          this._updateTasks(this._state);
+        }
+      });
   }
 
   _addTask(taskController, oldData, newData) {
@@ -126,25 +131,30 @@ class BoardController {
       taskController.destroy();
       this._updateTasks(this._state);
     } else {
-      this._tasksModel.addTask(newData);
-      taskController.render(newData, TaskControllerMode.DEFAULT);
+      this._api.createTask(newData)
+        .then((taskModel) => {
+          this._tasksModel.addTask(taskModel);
+          taskController.render(taskModel, TaskControllerMode.DEFAULT);
 
-      if (this._state % OptionTasks.MORE_SHOW === 0) {
-        const destroyedTask = this._showedTaskControllers.pop();
+          if (this._state % OptionTasks.MORE_SHOW === 0) {
+            const destroyedTask = this._showedTaskControllers.pop();
+            destroyedTask.destroy();
+          }
 
-        destroyedTask.destroy();
-      }
+          this._showedTaskControllers = [].concat(taskController, this._showedTaskControllers);
+          this._state = this._showedTaskControllers.length;
 
-      this._showedTaskControllers = [].concat(taskController, this._showedTaskControllers);
-      this._state = this._showedTaskControllers.length;
-
-      this._renderLoadMoreButton();
+          this._renderLoadMoreButton();
+        });
     }
   }
 
   _deleteTask(taskController, oldData) {
-    this._tasksModel.removeTask(oldData.id);
-    this._updateTasks(this._state);
+    this._api.deleteTask(oldData.id)
+      .then(() => {
+        this._tasksModel.removeTask(oldData.id);
+        this._updateTasks(this._state);
+      });
   }
 
   _onMoreView() {

@@ -2,7 +2,8 @@ export const FILTER_NAMES = [
   `all`, `overdue`, `today`, `favorites`, `repeating`, `archive`
 ];
 export const HIDDEN_CLASS = `visually-hidden`;
-export const AUTHORIZATION = `Basic hgdjfhkjdhsfsldjfls`;
+export const AUTHORIZATION = `Basic hgdjfhkjdsfsldjfls`;
+export const END_POINT = `https://11.ecmascript.pages.academy/task-manager`;
 
 export const Color = {
   BLACK: `black`,
@@ -107,4 +108,11 @@ export const ColorToHex = {
   green: `#31b55c`,
   pink: `#ff3cb9`,
   yellow: `#ffe125`,
+};
+
+export const Method = {
+  GET: `GET`,
+  POST: `POST`,
+  PUT: `PUT`,
+  DELETE: `DELETE`
 };
