@@ -2,7 +2,7 @@ export const FILTER_NAMES = [
   `all`, `overdue`, `today`, `favorites`, `repeating`, `archive`
 ];
 export const HIDDEN_CLASS = `visually-hidden`;
-export const AUTHORIZATION = `Basic hgdjfhkjdsfsldjfls`;
+export const AUTHORIZATION = `Basic hgdjfh786kjdsfsldjfls`;
 export const END_POINT = `https://11.ecmascript.pages.academy/task-manager`;
 
 export const Color = {
@@ -46,7 +46,8 @@ export const Format = {
   POSITIVE: 1,
   NEGATIVE: -1,
   TIME: `hh:mm`,
-  DATE: `DD MMMM`
+  DATE: `DD MMMM`,
+  SHAKE_ANIMATION_TIMEOUT: 600,
 };
 
 export const Place = {
@@ -115,4 +116,9 @@ export const Method = {
   POST: `POST`,
   PUT: `PUT`,
   DELETE: `DELETE`
+};
+
+export const DefaultData = {
+  deleteButtonText: `Delete`,
+  saveButtonText: `Save`,
 };

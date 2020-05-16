@@ -121,6 +121,9 @@ class BoardController {
           taskController.render(taskModel, TaskControllerMode.DEFAULT);
           this._updateTasks(this._state);
         }
+      })
+      .catch(() => {
+        taskController.shake();
       });
   }
 
@@ -145,6 +148,9 @@ class BoardController {
           this._state = this._showedTaskControllers.length;
 
           this._renderLoadMoreButton();
+        })
+        .catch(() => {
+          taskController.shake();
         });
     }
   }
@@ -154,6 +160,9 @@ class BoardController {
       .then(() => {
         this._tasksModel.removeTask(oldData.id);
         this._updateTasks(this._state);
+      })
+      .catch(() => {
+        taskController.shake();
       });
   }
 
