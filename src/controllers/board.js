@@ -1,8 +1,8 @@
-import NoTasksComponent from "../components/no-task";
-import TasksComponent from "../components/tasks";
 import MoreButtonComponent from "../components/button-more";
+import NoTasksComponent from "../components/no-task";
 import SortComponent from "../components/sort";
 import TaskController from "./task";
+import TasksComponent from "../components/tasks";
 
 import {OptionTasks, Place, Mode as TaskControllerMode, emptyTask} from "../components/consts";
 
