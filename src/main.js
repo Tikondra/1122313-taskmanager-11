@@ -1,46 +1,32 @@
+import API from "./api";
 import BoardComponent from "./components/board.js";
+import BoardController from "./controllers/board";
 import FilterController from "./controllers/filter";
 import SiteMenuComponent from "./components/menu.js";
 import StatisticsComponent from "./components/statistics";
-import BoardController from "./controllers/board";
 import TasksModel from "./models/tasks.js";
-
-import {generateTasks} from "./mock/task";
-
-import {OptionTasks, Place, MenuItem} from "./components/consts";
-
 import {render} from "./utils/render";
+import {getDateFrom} from "./utils/common";
+import {Place, MenuItem, ApiOption} from "./components/consts";
+
+const dateTo = new Date();
+const dateFrom = getDateFrom(dateTo);
+
+const api = new API(ApiOption.END_POINT, ApiOption.AUTHORIZATION);
+const tasksModel = new TasksModel();
 
 const siteMainElement = document.querySelector(`.main`);
 const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
 const siteMenuComponent = new SiteMenuComponent();
-
-render(siteHeaderElement, siteMenuComponent, Place.BEFOREEND);
-
-const tasks = generateTasks(OptionTasks.COUNT);
-const tasksModel = new TasksModel();
-
-tasksModel.setTasks(tasks);
-
-const filterController = new FilterController(siteMainElement, tasksModel);
-
-filterController.render();
+const statisticsComponent = new StatisticsComponent({tasks: tasksModel, dateFrom, dateTo});
 
 const boardComponent = new BoardComponent();
+const boardController = new BoardController(boardComponent, tasksModel, api);
+const filterController = new FilterController(siteMainElement, tasksModel);
 
+render(siteHeaderElement, siteMenuComponent, Place.BEFOREEND);
+filterController.render();
 render(siteMainElement, boardComponent, Place.BEFOREEND);
-
-const boardController = new BoardController(boardComponent, tasksModel);
-
-boardController.render();
-
-const dateTo = new Date();
-const dateFrom = (() => {
-  const d = new Date(dateTo);
-  d.setDate(d.getDate() - 7);
-  return d;
-})();
-const statisticsComponent = new StatisticsComponent({tasks: tasksModel, dateFrom, dateTo});
 render(siteMainElement, statisticsComponent, Place.BEFOREEND);
 statisticsComponent.hide();
 
@@ -61,4 +47,10 @@ siteMenuComponent.setOnChange((menuItem) => {
       boardController.show();
       break;
   }
+});
+
+api.getTasks()
+.then((tasks) => {
+  tasksModel.setTasks(tasks);
+  boardController.render();
 });

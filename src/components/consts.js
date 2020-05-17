@@ -38,13 +38,21 @@ export const OptionTasks = {
   MAX_DESCRIPTION_LENGTH: 240
 };
 
+export const ApiOption = {
+  TASKS: `tasks`,
+  END_POINT: `https://11.ecmascript.pages.academy/task-manager`,
+  AUTHORIZATION: `Basic hgdjfh786kjdsfsldjfls`,
+  CONTENT_TYPE: {"Content-Type": `application/json`},
+};
+
 export const Format = {
   LESS_TEN: 10,
   DATE_RANGE: 8,
   POSITIVE: 1,
   NEGATIVE: -1,
   TIME: `hh:mm`,
-  DATE: `DD MMMM`
+  DATE: `DD MMMM`,
+  SHAKE_ANIMATION_TIMEOUT: 600,
 };
 
 export const Place = {
@@ -106,4 +114,21 @@ export const ColorToHex = {
   green: `#31b55c`,
   pink: `#ff3cb9`,
   yellow: `#ffe125`,
+};
+
+export const Method = {
+  GET: `GET`,
+  POST: `POST`,
+  PUT: `PUT`,
+  DELETE: `DELETE`
+};
+
+export const Code = {
+  OK: 200,
+  NOT_OK: 300
+};
+
+export const DefaultData = {
+  DELETE_BTN: `Delete`,
+  SAVE_BTN: `Save`,
 };
