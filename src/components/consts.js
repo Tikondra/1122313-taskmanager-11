@@ -43,7 +43,7 @@ export const OptionTasks = {
 export const ApiOption = {
   TASKS: `tasks`,
   END_POINT: `https://11.ecmascript.pages.academy/task-manager`,
-  AUTHORIZATION: `Basic hgdjfh786kjds55fsldjfls`,
+  AUTHORIZATION: `Basic hgggbnvbvmbbfhgfhjhj1155gfhgfls`,
   CONTENT_TYPE: {"Content-Type": `application/json`},
   STORE_NAME: `${STORE_PREFIX}-${STORE_VER}`,
   SUNC: `tasks/sync`
