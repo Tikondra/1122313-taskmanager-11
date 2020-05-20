@@ -57,10 +57,10 @@ const API = class {
 
   sync(data) {
     return this._load({
-      url: `tasks/sync`,
+      url: ApiOption.SUNC,
       method: Method.POST,
       body: JSON.stringify(data),
-      headers: new Headers({"Content-Type": `application/json`})
+      headers: new Headers(ApiOption.CONTENT_TYPE)
     })
       .then((response) => response.json());
   }
