@@ -2,6 +2,8 @@ export const FILTER_NAMES = [
   `all`, `overdue`, `today`, `favorites`, `repeating`, `archive`
 ];
 export const HIDDEN_CLASS = `visually-hidden`;
+const STORE_PREFIX = `taskmanager-localstorage`;
+const STORE_VER = `v1`;
 
 export const Color = {
   BLACK: `black`,
@@ -43,6 +45,7 @@ export const ApiOption = {
   END_POINT: `https://11.ecmascript.pages.academy/task-manager`,
   AUTHORIZATION: `Basic hgdjfh786kjdsfsldjfls`,
   CONTENT_TYPE: {"Content-Type": `application/json`},
+  STORE_NAME: `${STORE_PREFIX}-${STORE_VER}`
 };
 
 export const Format = {
