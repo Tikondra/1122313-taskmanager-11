@@ -60,7 +60,7 @@ apiWithProvider.getTasks()
 });
 
 window.addEventListener(`load`, () => {
-  navigator.serviceWorker.register(`/sw.js`);
+  navigator.serviceWorker.register(`/1122313-taskmanager-11/14/sw.js`);
 });
 
 window.addEventListener(`online`, () => {
