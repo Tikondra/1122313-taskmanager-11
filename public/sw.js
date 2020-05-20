@@ -1,80 +1,92 @@
-const STATUS_BASIC = `basic`;
-const STATUS_SUCCESS = 200;
 const CACHE_PREFIX = `taskmanager-cache`;
 const CACHE_VER = `v1`;
 const CACHE_NAME = `${CACHE_PREFIX}-${CACHE_VER}`;
 
-const DATA = [
-  `/`,
-  `/index.html`,
-  `/bundle.js`,
-  `/css/normalize.css`,
-  `/css/style.css`,
-  `/fonts/HelveticaNeueCyr-Bold.woff`,
-  `/fonts/HelveticaNeueCyr-Bold.woff2`,
-  `/fonts/HelveticaNeueCyr-Medium.woff`,
-  `/fonts/HelveticaNeueCyr-Medium.woff2`,
-  `/fonts/HelveticaNeueCyr-Roman.woff`,
-  `/fonts/HelveticaNeueCyr-Roman.woff2`,
-  `/img/add-photo.svg`,
-  `/img/close.svg`,
-  `/img/sample-img.jpg`,
-  `/img/wave.svg`,
-];
+self.addEventListener(`install`, (evt) => {
+  evt.waitUntil(
+    caches.open(CACHE_NAME)
+      .then((cache) => {
+        return cache.addAll([
+          `/`,
+          `/index.html`,
+          `/bundle.js`,
+          `/css/normalize.css`,
+          `/css/style.css`,
+          `/fonts/HelveticaNeueCyr-Bold.woff`,
+          `/fonts/HelveticaNeueCyr-Bold.woff2`,
+          `/fonts/HelveticaNeueCyr-Medium.woff`,
+          `/fonts/HelveticaNeueCyr-Medium.woff2`,
+          `/fonts/HelveticaNeueCyr-Roman.woff`,
+          `/fonts/HelveticaNeueCyr-Roman.woff2`,
+          `/img/add-photo.svg`,
+          `/img/close.svg`,
+          `/img/sample-img.jpg`,
+          `/img/wave.svg`,
+        ]);
+      })
+  );
+});
 
-const getData = (cache) => cache.addAll(DATA);
+self.addEventListener(`activate`, (evt) => {
+  evt.waitUntil(
+    // Получаем все названия кэшей
+    caches.keys()
+      .then(
+        // Перебираем их и составляем набор промисов на удаление
+        (keys) => Promise.all(
+          keys.map(
+            (key) => {
+              // Удаляем только те кэши,
+              // которые начинаются с нашего префикса,
+              // но не совпадают по версии
+              if (key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME) {
+                return caches.delete(key);
+              }
 
-const onInstall = (evt) => {
-  evt.waitUntil(caches.open(CACHE_NAME).then(getData));
-};
+              // Остальные не обрабатываем
+              return null;
+            })
+            .filter((key) => key !== null)
+        )
+      )
+  );
+});
 
-const getKey = (key) => {
-  if (key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME) {
-    return caches.delete(key);
-  }
-
-  return null;
-};
-
-const getFilterKey = (key) => key !== null;
-
-const getAllKeys = (keys) => {
-  Promise.all(keys.map(getKey).filter(getFilterKey));
-};
-
-const onActivate = (evt) => {
-  evt.waitUntil(caches.keys().then((keys) => getAllKeys(keys)));
-};
-
-const getRequest = (response, request) => {
-  if (!response || response.status !== STATUS_SUCCESS || response.type !== STATUS_BASIC) {
-    return response;
-  }
-
-  const clonedResponse = response.clone();
-
-  caches.open(CACHE_NAME)
-    .then((cache) => cache.put(request, clonedResponse));
-
-  return response;
-};
-
-const getCacheResponse = (cacheResponse, request) => {
-  if (cacheResponse) {
-    return cacheResponse;
-  }
-
-  return fetch(request)
-    .then(getRequest);
-};
-
-const onFetch = (evt) => {
+self.addEventListener(`fetch`, (evt) => {
   const {request} = evt;
 
-  evt.respondWith(caches.match(request)
-    .then((cacheResponse) => getCacheResponse(cacheResponse, request)));
-};
+  evt.respondWith(
+    caches.match(request)
+      .then((cacheResponse) => {
+        // Если в кэше нашёлся ответ на запрос (request),
+        // возвращаем его (cacheResponse) вместо запроса к серверу
+        if (cacheResponse) {
+          return cacheResponse;
+        }
 
-self.addEventListener(`install`, onInstall);
-self.addEventListener(`activate`, onActivate);
-self.addEventListener(`fetch`, onFetch);
+        // Если в кэше не нашёлся ответ,
+        // повторно вызываем fetch
+        // с тем же запросом (request),
+        // и возвращаем его
+        return fetch(request)
+          .then((response) => {
+            // Если ответа нет, или ответ со статусом отличным от 200 OK,
+            // или ответ небезопасного типа (не basic), тогда просто передаём
+            // ответ дальше, никак не обрабатываем
+            if (!response || response.status !== 200 || response.type !== `basic`) {
+              return response;
+            }
+
+            // А если ответ удовлетворяет всем условиям, клонируем его
+            const clonedResponse = response.clone();
+
+            // Копию кладём в кэш
+            caches.open(CACHE_NAME)
+              .then((cache) => cache.put(request, clonedResponse));
+
+            // Оригинал передаём дальше
+            return response;
+          });
+      })
+  );
+});

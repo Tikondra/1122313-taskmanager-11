@@ -1,4 +1,4 @@
-import API from "./api/api";
+import API from "./api/index";
 import BoardComponent from "./components/board.js";
 import BoardController from "./controllers/board";
 import FilterController from "./controllers/filter";
@@ -60,7 +60,7 @@ apiWithProvider.getTasks()
 });
 
 window.addEventListener(`load`, () => {
-  navigator.serviceWorker.register(`/1122313-taskmanager-11/14/sw.js`);
+  navigator.serviceWorker.register(`/sw.js`);
 });
 
 window.addEventListener(`online`, () => {

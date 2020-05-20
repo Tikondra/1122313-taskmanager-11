@@ -95,7 +95,6 @@ class Provider {
         .then((response) => {
           const createdTasks = getSyncedTasks(response.created);
           const updatedTasks = getSyncedTasks(response.updated);
-
           const items = createStoreStructure([...createdTasks, ...updatedTasks]);
 
           this._store.setItems(items);

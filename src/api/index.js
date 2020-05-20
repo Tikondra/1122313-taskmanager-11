@@ -18,7 +18,7 @@ const getConfigFetch = (data, url, method) => {
   };
 };
 
-const API = class {
+class API {
   constructor(endPoint, authorization) {
     this._endPoint = endPoint;
     this._authorization = authorization;
@@ -74,6 +74,6 @@ const API = class {
         throw err;
       });
   }
-};
+}
 
 export default API;
